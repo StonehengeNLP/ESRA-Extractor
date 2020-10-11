@@ -1,3 +1,7 @@
 # Explainable Scientific Research Assistant (ESRA)
 
-git clone --recursive [link]
+``` sh
+git clone --recursive https://github.com/StonehengeNLP/esra.git
+cd ./esra
+scripts/setup.sh
+```
