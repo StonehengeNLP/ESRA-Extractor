@@ -1,3 +1,6 @@
 [submodule "spert"]
 	path = spert
 	url = https://github.com/StonehengeNLP/spert.git
+[submodule "SciERC"]
+	path = SciERC
+	url = https://github.com/StonehengeNLP/SciERC.git
