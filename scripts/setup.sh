@@ -15,7 +15,7 @@ pip3 install -r ./requirements.txt
 CUR_PATH="$PWD"
 cd /usr/local/lib/python3.7/site-packages/tensorflow
 ln -s libtensorflow_framework.so.1 libtensorflow_framework.so
-cd CUR_PATH
+cd $CUR_PATH
 
 chmod 777 ./scripts/fetch_required_data.sh
 chmod 777 ./scripts/fetch_coref_model.sh
