@@ -59,7 +59,7 @@ def extract(abstracts):
     out = []
     with open(filepath) as f:
         for line in f:
-            data.append(json.loads(line))
+            out.append(json.loads(line))
     
     os.chdir('..')
     
