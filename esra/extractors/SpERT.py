@@ -1,11 +1,15 @@
 import re
-import os
+import sys
 import json
 import glob
 import subprocess
 
-os.chdir('spert')
 
+sys.path.append('./spert')
+
+
+# TODO: Make it object-oriented
+# TODO: Make an extract in SpERT to be directly called and returned
 
 def _split_punc(abstract):
     """abstract preprocessing"""
