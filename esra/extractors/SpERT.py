@@ -1,11 +1,8 @@
 import re
-import sys
+import os
 import json
 import glob
 import subprocess
-
-
-sys.path.append('./spert')
 
 
 # TODO: Make it object-oriented
@@ -35,6 +32,9 @@ def _get_latest_filepath():
 
 
 def extract(abstracts):
+    
+    os.chdir('./spert')
+
     abstracts = _split_punc(abstracts)
     _dump_json_data(abstracts)
     subprocess.call(["python3", "./spert.py", "eval", "--config", "configs/eval.conf"])
@@ -44,7 +44,10 @@ def extract(abstracts):
     with open(filepath) as f:
         preds = f.readlines()
         preds = eval(preds[0])
-        return preds
+    
+    os.chdir('..')
+    
+    return preds
     # relation_all = []
     # for p in preds:
     #     tokens = p['tokens']

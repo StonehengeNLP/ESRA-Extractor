@@ -1,13 +1,10 @@
 import re
-import sys
+import os
 import json
 import glob
 import random
 import string
 import subprocess
-
-sys.path.append('./SciERC')
-
 
 def get_random_string(length):
     letters = string.ascii_lowercase
@@ -47,6 +44,9 @@ def _dump_json_data(abstracts):
             
 
 def extract(abstracts):
+    
+    os.chdir('./SciERC')
+    
     abstracts = _split_punc(abstracts)
     _dump_json_data(abstracts)
     
@@ -55,9 +55,12 @@ def extract(abstracts):
     subprocess.call(["python3", "write_single.py", "scientific_best_coref"])
     
     # read output file
-    filepath = "data.json"
+    filepath = "output.json"
     out = []
     with open(filepath) as f:
         for line in f:
             data.append(json.loads(line))
+    
+    os.chdir('..')
+    
     return out

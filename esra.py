@@ -8,5 +8,3 @@ if __name__ == '__main__':
     print(a)
     a = SciERC.extract(abstracts)
     print(a)
-    
-    
