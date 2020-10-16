@@ -11,14 +11,14 @@ import subprocess
 def _split_punc(abstract):
     """abstract preprocessing"""
     if isinstance(abstract, str):
-        return re.sub(r'([\.,:;()])', r' \1 ', abstract)
+        return re.sub(r'([\.,:;()])', r' \1 ', abstract).split()
     elif isinstance(abstract, list):
         return [_split_punc(a) for a in abstract]
     
     
 def _dump_json_data(abstracts):
     """export the abstract(s) to data.json format"""
-    DATA = [{"tokens": abstract.split(), 
+    DATA = [{"tokens": abstract, 
             "entities": [{"type": "Task", "start": 0, "end": 1},
                         {"type": "Task", "start": 1, "end": 2}], 
             "relations": [{"type": "Part-of", "head": 0, "tail": 1}], 
@@ -31,7 +31,25 @@ def _get_latest_filepath():
     return max(glob.glob('data/log/scierc_eval/*/predictions*.json'))
 
 
-def extract(abstracts):
+def _interpret(result):
+    tokens = result['tokens']
+    entities = result['entities']
+    relations = result['relations']
+    
+    out_entities = []
+    out_relations = []
+
+    for e in entities:
+        word = ' '.join(tokens[e['start']:e['end']])
+        out_entities += [[e['type'], word]]
+ 
+    for r in relations:
+        out_relations += [[r['type'], r['head'], r['tail']]]
+
+    return {'entities': out_entities, 'relations': out_relations}
+
+
+def extract(abstracts, interpret=True):
     
     os.chdir('./spert')
 
@@ -47,11 +65,7 @@ def extract(abstracts):
     
     os.chdir('..')
     
-    return preds
-    # relation_all = []
-    # for p in preds:
-    #     tokens = p['tokens']
-    #     entities = [' '.join(tokens[e['start']:e['end']]) for e in p['entities']]
-    #     relations = [(entities[r['head']], r['type'], entities[r['tail']]) for r in p['relations']]
-    #     relation_all += relations
-    # print(relation_all)
+    if interpret:
+        return [_interpret(ab) for ab in preds]
+    else:
+        return out
