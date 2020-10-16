@@ -27,5 +27,6 @@ ln -s libtensorflow_framework.so.1 -f libtensorflow_framework.so
 cd ..
 
 
-# Setup for ?
+# Setup for ESRA
 pip3 install -r requirements.txt
+python3 -m spacy download en_core_web_lg
