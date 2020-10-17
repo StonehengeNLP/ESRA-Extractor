@@ -11,7 +11,15 @@ except ModuleNotFoundError:
 #   - then lemmatize
 
 class Post_processor:
-
+    """
+        Post_processor class for ESRA validator module
+        
+        Init Post_processor class and you are good to go. 
+        
+        Process entitiy name by call .post_processing(entity). The 
+        post-processing function will return list of newly generated 
+        entities
+    """
     def __init__(self):
         # init model and disabling unuse module(s)
         try:
