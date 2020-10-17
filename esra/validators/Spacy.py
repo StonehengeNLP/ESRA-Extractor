@@ -13,7 +13,7 @@ class Post_processor:
 
     def __init__(self):
         # init model and disabling unuse module(s)
-        self.model = en_core_web_md.load(disable=["ner", "tagger"])
+        self.model = en_core_web_lg.load(disable=["ner", "tagger"])
     
     def _lemmatizer(self, doc):
         """
