@@ -117,8 +117,11 @@ class Post_processor:
         used_indexes = set()
     
         # Back component index
-        back_index = heads[doc[min(conj_indexes)].head.i].i
-        back_index = self._find_root(back_index, compound_indexes)
+        if max(conj_indexes) == len(doc) - 1:
+            back_index = len(doc)
+        else:
+            back_index = heads[doc[min(conj_indexes)].head.i].i
+            back_index = self._find_root(back_index, compound_indexes)
         back = doc[back_index:].text
         used_indexes.add(back_index)
 
