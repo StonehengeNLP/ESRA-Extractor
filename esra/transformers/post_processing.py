@@ -1,7 +1,7 @@
 import spacy
 
 try:
-    import en_core_web_lg
+    import en_core_web_md
 except ModuleNotFoundError:
     print("Spacy model not found!, importing small model")
     import en_core_web_sm
@@ -23,8 +23,8 @@ class Post_processor:
     def __init__(self):
         # init model and disabling unuse module(s)
         try:
-            self.model = en_core_web_lg.load(disable=["ner", "tagger"])
-            print("Set SpaCy model to large model")
+            self.model = en_core_web_md.load(disable=["ner", "tagger"])
+            print("Set SpaCy model to medium model")
         except:
             self.model = en_core_web_sm.load(disable=["ner", "tagger"])         
             print("Set SpaCy model to small model")
