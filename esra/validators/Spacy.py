@@ -168,5 +168,5 @@ class Post_processor:
         processed_entities = self._conjunction_spliter(doc)
         for (i,en) in enumerate(processed_entities):
             tmp = self.model(en)
-            processed_entities[i] = self._lemmatizer(tmp)
+            processed_entities[i] = self._lemmatizer(tmp).strip()
         return processed_entities
