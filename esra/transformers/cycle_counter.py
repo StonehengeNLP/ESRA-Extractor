@@ -1,6 +1,6 @@
 class Cycle_counter:
     """
-        Cycle_counter class for ESRA validator module.
+        cycle_counter class for ESRA validator module.
 
         To get the number of cycle in graph use .count_cycle(data).       
     """
