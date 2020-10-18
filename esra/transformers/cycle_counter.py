@@ -10,7 +10,15 @@ class CycleCounter:
         self.relation_types = ['PART-OF','EVALUATE-FOR','USED-FOR','FEATURE-OF','HYPONYM-OF','REFER-TO']
         self.threshold = threshold
 
-    def set_threshold(self,threshold):
+    def set_threshold(self,threshold)
+        """
+            Threshold setter.
+
+            params:
+
+                threshold: new threshold value.
+
+        """
         self.threshold = threshold
 
 
@@ -81,8 +89,7 @@ class CycleCounter:
 
             params:
 
-                - data: {entities:[entity_type,entity_name],
-                         relations:[relation_type,from_idx,to_idx]}
+                - data: data object.
             
             return:
 
@@ -102,6 +109,21 @@ class CycleCounter:
         return n_cycle
     
     def cyclic_validate(self,data):
+        """
+            Validate the graph using threshold value. The graph
+            will valid if the number of loop less than or equal
+            to the threshold value
+
+            params:
+
+                data: {entities:[entity_type,entity_name],
+                       relations:[relation_type,from_idx,to_idx]}
+
+            return:
+
+                boolean: True -> valid, False -> Invalid
+
+        """
         if(self.__count_cycle(data) > self.threshold):
             return False
         else:
