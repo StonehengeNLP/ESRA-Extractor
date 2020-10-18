@@ -164,77 +164,76 @@ class Post_processor:
         """
         return doc[:-1].text + " " + doc[-1].lemma_
 
-    def post_precessing(self, data):
+    def _post_processing(self, entity):
         """
-            # Post processing function, include conjunction separator
-            # and name lemmatizer.
+            Post processing function, include conjunction separator
+            and name lemmatizer.
 
-            # params: 
+            params: 
 
-            #     - entity(str), input entity name 
+                - entity(str), input entity name 
 
-            # return:
+            return:
 
-            #     - generate entity names(list[str])
+                - generate entity names(list[str])
         """
-        if isinstance(data, str):
-            doc = self.model(data)
-            processed_entities = self._conjunction_spliter(doc)
-            for (i,en) in enumerate(processed_entities):
-                tmp = self.model(en)
-                processed_entities[i] = self._lemmatizer(tmp).strip()
-            return processed_entities
+        doc = self.model(entity)
+        processed_entities = self._conjunction_spliter(doc)
+        for (i,en) in enumerate(processed_entities):
+            tmp = self.model(en)
+            processed_entities[i] = self._lemmatizer(tmp).strip()
+        return processed_entities
         
-        elif isinstance(data, dict):
-            entities = data['entities']
-            relations = data['relations']
-            len_entities = len(entities)
-            _changes = {}
-            
-            # split the conjuncted entities
-            for i, (_type, _name) in enumerate(entities):
-                processed_entities = self.post_precessing(_name)
-                if len(processed_entities) == 1:
-                    entities[i][1] = processed_entities[0]
-                else:
-                    _changes[i] = processed_entities
-            
-            # append the entities
-            for i in list(_changes.keys())[::-1]:
-                entities.pop(i)
-                for _n in _changes[i]:
-                    entities.insert(i, [entities[i][0], _n])
-            
-            # create index mapping
-            _index_map = []
-            _c = 0
-            for i in range(len_entities):
-                _index_map += [_c]
-                if i in _changes:
-                    _c += len(_changes[i])
-                else:
-                    _c += 1
-            
-            # map its relations
-            _i = 0
-            while _i < len(relations):
-                relation = relations[_i] 
-                if relation[1] in _changes and relation[2] in _changes:
-                    relations.pop(_i)
-                    for j in range(len(_changes[relation[1]])):
-                        for k in range(len(_changes[relation[2]])):
-                            relations.insert(_i + j + k, [relation[0], relation[1] + j, relation[2] + k])
-                    _i += len(_changes[relation[1]]) + len(_changes[relation[2]])
-                elif relation[1] in _changes:
-                    for j in range(1, len(_changes[relation[1]])):
-                        relations.insert(_i + j, [relation[0], relation[1] + j, relation[2]])
-                    _i += len(_changes[relation[1]])
-                elif relation[2] in _changes:
-                    for j in range(1, len(_changes[relation[2]])):
-                        relations.insert(_i + j, [relation[0], relation[1], relation[2] + j])
-                    _i += len(_changes[relation[2]])
-                else:
-                    relation[1] = _index_map[relation[1]]
-                    relation[2] = _index_map[relation[2]]
-                    _i += 1
-            return data
+    def post_processing(self, data):
+        entities = data['entities']
+        relations = data['relations']
+        len_entities = len(entities)
+        _changes = {}
+        
+        # split the conjuncted entities
+        for i, (_type, _name) in enumerate(entities):
+            processed_entities = self._post_processing(_name)
+            if len(processed_entities) == 1:
+                entities[i][1] = processed_entities[0]
+            else:
+                _changes[i] = processed_entities
+        
+        # append the entities
+        for i in list(_changes.keys())[::-1]:
+            entities.pop(i)
+            for _n in _changes[i]:
+                entities.insert(i, [entities[i][0], _n])
+        
+        # create index mapping
+        _index_map = []
+        _c = 0
+        for i in range(len_entities):
+            _index_map += [_c]
+            if i in _changes:
+                _c += len(_changes[i])
+            else:
+                _c += 1
+        
+        # map its relations
+        _i = 0
+        while _i < len(relations):
+            relation = relations[_i] 
+            if relation[1] in _changes and relation[2] in _changes:
+                relations.pop(_i)
+                for j in range(len(_changes[relation[1]])):
+                    for k in range(len(_changes[relation[2]])):
+                        relations.insert(_i + j + k, [relation[0], relation[1] + j, relation[2] + k])
+                _i += len(_changes[relation[1]]) + len(_changes[relation[2]])
+            elif relation[1] in _changes:
+                for j in range(1, len(_changes[relation[1]])):
+                    relations.insert(_i + j, [relation[0], relation[1] + j, relation[2]])
+                _i += len(_changes[relation[1]])
+            elif relation[2] in _changes:
+                for j in range(1, len(_changes[relation[2]])):
+                    relations.insert(_i + j, [relation[0], relation[1], relation[2] + j])
+                _i += len(_changes[relation[2]])
+            else:
+                relation[1] = _index_map[relation[1]]
+                relation[2] = _index_map[relation[2]]
+                _i += 1
+        return data
