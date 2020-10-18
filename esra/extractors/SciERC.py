@@ -78,9 +78,23 @@ def _interpret(result):
         _ent_index[(e[0], e[1])] = len(_ent_index)
         word = ' '.join(tokens[e[0]:e[1]+1])
         out_entities += [[e[2], word]]
+        
+        # for bugs of parentheses
+        if tokens[e[1]+1] == '(':
+            _i = 1
+            while tokens[e[1]+_i] != ')':
+                _i += 1
+            _ent_index[(e[0], e[1] + _i)] = len(_ent_index)
+            word = ' '.join(tokens[e[0]:e[1]+_i+1])
+            out_entities += [[e[2], word]]
+
+            out_corefs += [[len(_ent_index)-2, len(_ent_index)-1]]
 
     for r in relations:
-        out_relations += [[r[4], _ent_index[(r[0], r[1])], _ent_index[(r[2], r[3])]]]
+        try: 
+            out_relations += [[r[4], _ent_index[(r[0], r[1])], _ent_index[(r[2], r[3])]]]
+        except KeyError:
+            print('bug was found here')
 
     for c in corefs:
         out_corefs += [[_ent_index[(e[0], e[1])] for e in c]]
@@ -108,7 +122,7 @@ def extract(abstracts, interpret=True):
             out[-1]['tokens'] = abstracts[i]
     
     os.chdir('..')
-    
+
     if interpret:
         return [_interpret(ab) for ab in out]
     else:

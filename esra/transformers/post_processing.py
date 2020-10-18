@@ -23,10 +23,10 @@ class Post_processor:
     def __init__(self):
         # init model and disabling unuse module(s)
         try:
-            self.model = en_core_web_md.load(disable=["ner", "tagger"])
+            self.model = en_core_web_md.load()
             print("Set SpaCy model to medium model")
         except:
-            self.model = en_core_web_sm.load(disable=["ner", "tagger"])         
+            self.model = en_core_web_sm.load()         
             print("Set SpaCy model to small model")
 
     
