@@ -30,7 +30,7 @@ def abbreviation_split(data):
         entities[idx] = [entity[0],issue_entity]
 
         #add abbreviation entity with same enttity type
-        entities.append([entity[0],abbrevate_entity])
+        entities.append(['Abbreviation',abbrevate_entity])
 
         #add REFER-TO relation link abbreviation to full one
         relations.append(['REFER-TO',entities_length,idx])
