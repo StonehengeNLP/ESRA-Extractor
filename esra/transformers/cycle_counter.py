@@ -1,17 +1,20 @@
-class Cycle_counter:
+class CycleCounter:
     """
         cycle_counter class for ESRA validator module.
 
         To get the number of cycle in graph use .count_cycle(data).       
     """
 
-    def __init__(self):
+    def __init__(self,threshold):
         # init the list of relation_types that this module going to check
         self.relation_types = ['PART-OF','EVALUATE-FOR','USED-FOR','FEATURE-OF','HYPONYM-OF','REFER-TO']
+        self.threshold = threshold
+
+    def set_threshold(self,threshold):
+        self.threshold = threshold
 
 
-
-    def __get_adjancencyLists(self,data):
+    def __get_adjancency_lists(self,data):
         """
             Retrieve adjancency_list of graph of all relation types.
 
@@ -36,7 +39,7 @@ class Cycle_counter:
 
 
 
-    def __isCyclicUtil(self,node_idx,visited,recStack,adjancency_list):
+    def __is_cyclic_util(self,node_idx,visited,recStack,adjancency_list):
         """
             check isCyclic recursively.
 
@@ -61,7 +64,7 @@ class Cycle_counter:
         
         for neighbour_idx in adjancency_list[node_idx]:
             if visited[neighbour_idx] == False:
-                if self.__isCyclicUtil(neighbour_idx,visited,recStack,adjancency_list) == True:
+                if self.__is_cyclic_util(neighbour_idx,visited,recStack,adjancency_list) == True:
                     return True
             elif recStack[neighbour_idx] == True:
                 return True
@@ -70,7 +73,7 @@ class Cycle_counter:
 
 
 
-    def count_cycle(self,data):
+    def __count_cycle(self,data):
         """
             Count the number of cycle in the graph including self-loop.
             Cycle in this context mean the cycles of directed graph 
@@ -86,7 +89,7 @@ class Cycle_counter:
                 - n_cycle: the number of cycle in the graph.
 
         """
-        adjancency_lists = self.__get_adjancencyLists(data)
+        adjancency_lists = self.__get_adjancency_lists(data)
         n_cycle = 0
 
         for adjancency_list in adjancency_lists:
@@ -94,9 +97,15 @@ class Cycle_counter:
             recStack = [False] * len(adjancency_list)
             for node_idx in range(len(adjancency_list)):
                 if visited[node_idx] == False:
-                    if self.__isCyclicUtil(node_idx,visited,recStack,adjancency_list) == True:
+                    if self.__is_cyclic_util(node_idx,visited,recStack,adjancency_list) == True:
                         n_cycle += 1
         return n_cycle
+    
+    def cyclic_validate(self,data):
+        if(self.__count_cycle(data) > self.threshold):
+            return False
+        else:
+            return True
 
 
 
@@ -117,5 +126,5 @@ class Cycle_counter:
 #               ['USED-FOR', 2, 3],
 #               ['USED-FOR', 7, 7]]
 #         }
-# cycleCounter = Cycle_counter()
-# print(cycleCounter.count_cycle(data))
+# cc = CycleCounter(threshold=2)
+# print(cc.cyclic_validate(data))
