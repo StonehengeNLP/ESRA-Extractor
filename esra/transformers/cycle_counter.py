@@ -10,7 +10,7 @@ class CycleCounter:
         self.relation_types = ['PART-OF','EVALUATE-FOR','USED-FOR','FEATURE-OF','HYPONYM-OF','REFER-TO']
         self.threshold = threshold
 
-    def set_threshold(self,threshold)
+    def set_threshold(self,threshold):
         """
             Threshold setter.
 
@@ -131,22 +131,22 @@ class CycleCounter:
 
 
 
-# # for testing this module
-# data = {'entities': [['OtherScientificTerm', 'black-box nature'],
-#               ['Method', 'deep learning models'], 
-#               ['Generic', 'methods'],
-#               ['Generic', 'models'],
-#               ['Method', 'model-agnostic and model-specific explanation methods'],
-#               ['Method', 'CNNs'],
-#               ['Task', 'text classification'],
-#               ['Task', 'human-grounded evaluations'],
-#               ['OtherScientificTerm', 'model behavior'],
-#               ['Method', 'model predictions'],
-#               ['Method', 'explanation methods'],
-#               ['Generic', 'methods']],
-#        'relations':[['USED-FOR', 1, 2],
-#               ['USED-FOR', 2, 3],
-#               ['USED-FOR', 7, 7]]
-#         }
-# cc = CycleCounter(threshold=2)
-# print(cc.cyclic_validate(data))
+# for testing this module
+data = {'entities': [['OtherScientificTerm', 'black-box nature'],
+              ['Method', 'deep learning models'], 
+              ['Generic', 'methods'],
+              ['Generic', 'models'],
+              ['Method', 'model-agnostic and model-specific explanation methods'],
+              ['Method', 'CNNs'],
+              ['Task', 'text classification'],
+              ['Task', 'human-grounded evaluations'],
+              ['OtherScientificTerm', 'model behavior'],
+              ['Method', 'model predictions'],
+              ['Method', 'explanation methods'],
+              ['Generic', 'methods']],
+       'relations':[['USED-FOR', 1, 2],
+              ['USED-FOR', 2, 3],
+              ['USED-FOR', 7, 7]]
+        }
+cc = CycleCounter(threshold=2)
+print(cc.cyclic_validate(data))
