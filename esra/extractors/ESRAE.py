@@ -23,7 +23,7 @@ def _interpret(result):
     for c in coref:
         out_corefs += [[words[start] for start, end in c]]
 
-    return {'entities': out_entities, 'relations': out_relations, 'corefs': out_corefs}
+    return {'entities': out_entities, 'relations': out_relations, 'coreferences': out_corefs}
 
     
 def extract(abstracts, interpret=True):
