@@ -84,7 +84,7 @@ class Post_processor:
             if dep == "conj":
                 conj_indexes.add(i)
                 conj_indexes.add(head_idx)
-            if dep == "compound" or dep == "dep":
+            if dep == "compound" or dep == "dep" or dep == "npadvmod":
                 compound_indexes[head_idx] = \
                     compound_indexes.get(head_idx, []) + [i] 
         return (
