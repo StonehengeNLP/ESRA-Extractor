@@ -68,4 +68,4 @@ def extract(abstracts, interpret=True):
     if interpret:
         return [_interpret(ab) for ab in preds]
     else:
-        return out
+        return preds

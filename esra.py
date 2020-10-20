@@ -1,13 +1,30 @@
 import sys
-from esra.extractors import SciERC, SpERT
+import pandas as pd
 
+from esra.extractors import ESRAE
+from esra.loaders import csv_file
+from esra.transformers.cycle_counter import CycleCounter
+from esra.transformers.post_processing import Post_processor
+from esra.transformers.entity_merging import merge_entity
+from esra.transformers.abbreviation_splitter import abbreviation_split
+ 
 
 if __name__ == '__main__':
+    
     abstracts = [
-        "Due to the black-box nature of deep learning models, methods for explaining the models’ results are crucial to gain trust from humans and support collaboration between AIs and humans. In this paper, we consider several model-agnostic and model-specific explanation methods for CNNs for text classification and conduct three human-grounded evaluations, focusing on different purposes of explanations: (1) revealing model behavior, (2) justifying model predictions, and (3) helping humans investigate uncertain predictions. The results highlight dissimilar qualities of the various explanation methods we consider and show the degree to which these methods could serve for each purpose.",
-        "Due to the black-box nature of deep learning models, methods for explaining the models’ results are crucial to gain trust from humans and support collaboration between AIs and humans. In this paper, we consider several model-agnostic and model-specific explanation methods for CNNs for text classification and conduct three human-grounded evaluations, focusing on different purposes of explanations: (1) revealing model behavior, (2) justifying model predictions, and (3) helping humans investigate uncertain predictions. The results highlight dissimilar qualities of the various explanation methods we consider and show the degree to which these methods could serve for each purpose."
+        "The ability to accurately represent sentences is central to language understanding. We describe a convolutional architecture dubbed the Dynamic Convolutional Neural Network (DCNN) that we adopt for the semantic modelling of sentences. The network uses Dynamic k-Max Pooling, a global pooling operation over linear sequences. The network handles input sentences of varying length and induces a feature graph over the sentence that is capable of explicitly capturing short and long-range relations. The network does not rely on a parse tree and is easily applicable to any language. We test the DCNN in four experiments: small scale binary and multi-class sentiment prediction, six-way question classification and Twitter sentiment prediction by distant supervision. The network achieves excellent performance in the first three tasks and a greater than 25% error reduction in the last task with respect to the strongest baseline.",
         ]
-    a = SpERT.extract(abstracts)
-    b = SciERC.extract(abstracts)
-    print(a)
-    print(b)
+    
+    r = ESRAE.extract(abstracts)
+    print(r)
+    # CycleCounter = CycleCounter(2)
+    # PostProcessor = Post_processor()
+    
+    # for data in results:
+    #     data = merge_entity(data)
+    #     data = abbreviation_split(data)
+    #     data = PostProcessor.post_processing(data)
+    #     print(data)
+    #     if CycleCounter.cyclic_validate(data)):
+    #         # TODO: merge
+    #         # pass

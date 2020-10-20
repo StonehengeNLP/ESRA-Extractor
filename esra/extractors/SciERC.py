@@ -80,7 +80,7 @@ def _interpret(result):
         out_entities += [[e[2], word]]
         
         # for bugs of parentheses
-        if tokens[e[1]+1] == '(':
+        if len(tokens) > e[1]+1 and tokens[e[1]+1] == '(':
             _i = 1
             while tokens[e[1]+_i] != ')':
                 _i += 1
