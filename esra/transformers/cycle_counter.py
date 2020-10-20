@@ -7,7 +7,7 @@ class CycleCounter:
 
     def __init__(self,threshold):
         # init the list of relation_types that this module going to check
-        self.relation_types = ['PART-OF','EVALUATE-FOR','USED-FOR','FEATURE-OF','HYPONYM-OF','REFER-TO']
+        self.relation_types = ['Part-of','Evaluate-for','Used-for','Feature-of','Hyponym-of','Refer-to']
         self.threshold = threshold
 
     def set_threshold(self,threshold):

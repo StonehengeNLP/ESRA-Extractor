@@ -1,7 +1,7 @@
 def abbreviation_split(data):
     """
         Split the entity that indluding abbreviation preserve
-        its entity type and create the REFER-TO relation.
+        its entity type and create the Refer-to relation.
             ex. 'Convolution Neural Network ( CNN )' to 
                 - 'Convolution Neural Network' -> issue_entity
                 - 'CNN' -> abbrevate_entity
@@ -32,8 +32,8 @@ def abbreviation_split(data):
         #add abbreviation entity with same enttity type
         entities.append(['Abbreviation',abbrevate_entity])
 
-        #add REFER-TO relation link abbreviation to full one
-        relations.append(['REFER-TO',entities_length,idx])
+        #add Refer-to relation link abbreviation to full one
+        relations.append(['Refer-to',entities_length,idx])
 
         entities_length = len(entities)
         
