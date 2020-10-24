@@ -43,7 +43,8 @@ def remove_generic(data):
         entities[i] = [entity[0],entity[1]]
 
     # remove relations that associated with deleted entites
-    relations = [relation for relation in relations if (relation[1] not in deleted_entities_idx and relation[2] not in deleted_entities_idx)]
+    relations = [relation for relation in relations if (relation[1] not in deleted_entities_idx \
+        and relation[2] not in deleted_entities_idx)]
 
     # map the old_idx in relation to new_idx
     for (i,relation) in enumerate(relations):
