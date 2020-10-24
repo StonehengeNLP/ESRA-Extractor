@@ -1,5 +1,5 @@
 def remove_generic(data):
-    '''
+    """
         This module will clear the generic type entities
         that not included in whitelist
 
@@ -15,7 +15,7 @@ def remove_generic(data):
             - data: data object that remove generic type
             entities which is not in whitelist.
   
-    '''
+    """
 
     whitelist = [] #add whitelist here
     entities = data['entities']
