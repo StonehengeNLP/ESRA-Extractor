@@ -22,9 +22,7 @@ def _interpret(result):
 
     # the corefs from SciERC which refer to none entity in SpERT will be ejected
     for c in coref:
-        for start, end in c:
-            if start in words:
-                out_corefs += [[words[start]]]
+        out_corefs += [[words[start] for start, end in c if start in words]]
 
     return {'entities': out_entities, 'relations': out_relations, 'coreferences': out_corefs}
 

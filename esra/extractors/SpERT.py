@@ -13,7 +13,7 @@ from ..utils import nlp
 def _split_punc(abstract):
     """abstract preprocessing"""
     if isinstance(abstract, str):
-        return ' '.join([word.text for word in nlp(abstract)])
+        return [word.text for word in nlp(abstract)]
     elif isinstance(abstract, list):
         return [_split_punc(a) for a in abstract]
     
