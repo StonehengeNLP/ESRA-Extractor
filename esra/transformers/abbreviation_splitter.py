@@ -21,10 +21,13 @@ def abbreviation_split(data):
 
     for (idx,entity) in enumerate(entities):
       if '(' in entity[1] and ')' in entity[1]:
-        issue_entity = entity[1].strip()
-        open_bracket_idx = issue_entity.find('(')
-        abbrevate_entity = issue_entity[open_bracket_idx+1:-1].strip()
-        issue_entity = issue_entity[:open_bracket_idx].strip()
+        stripped_entity = entity[1].strip()
+        open_bracket_idx = stripped_entity.find('(')
+        close_bracket_idx = stripped_entity.find(')')
+        abbrevate_entity = stripped_entity[open_bracket_idx+1:close_bracket_idx].strip()
+        issue_entity = stripped_entity[:open_bracket_idx].strip()
+        if close_bracket_idx < len(stripped_entity)-1:
+            issue_entity += stripped_entity[close_bracket_idx+1:]
 
         #replace the full one on original idx
         entities[idx] = [entity[0],issue_entity]
@@ -42,22 +45,22 @@ def abbreviation_split(data):
 
     return data
 
-# #for testing abbreviation_splitter module
-# data = {'entities': [['OtherScientificTerm', 'black-box nature'],
-#               ['Method', 'deep learning models'], 
-#               ['Generic', 'methods'],
-#               ['Generic', 'models'],
-#               ['Method', 'model-agnostic and model-specific explanation methods'],
-#               ['Method', 'Convolution Neural Network ( CNN )'],
-#               ['Task', 'text classification'],
-#               ['Task', 'human-grounded evaluations'],
-#               ['OtherScientificTerm', 'model behavior'],
-#               ['Method', 'model predictions'],
-#               ['Method', 'explanation methods'],
-#               ['Generic', 'methods']],
-#        'relations':[['USED-FOR', 5, 2],
-#               ['USED-FOR', 3, 5],
-#               ['USED-FOR', 1, 7]]
-#         }
+#for testing abbreviation_splitter module
+data = {'entities': [['OtherScientificTerm', 'black-box nature'],
+              ['Method', 'deep learning models'], 
+              ['Generic', 'methods'],
+              ['Generic', 'models'],
+              ['Method', 'model-agnostic and model-specific explanation methods'],
+              ['Method', 'Convolution Neural Network ( CNN ) challenge'],
+              ['Task', 'text classification'],
+              ['Task', 'human-grounded evaluations'],
+              ['OtherScientificTerm', 'model behavior'],
+              ['Method', 'model predictions'],
+              ['Method', 'explanation methods'],
+              ['Generic', 'methods']],
+       'relations':[['USED-FOR', 5, 2],
+              ['USED-FOR', 3, 5],
+              ['USED-FOR', 1, 7]]
+        }
 
-# print(abbreviation_split(data))
+print(abbreviation_split(data))
