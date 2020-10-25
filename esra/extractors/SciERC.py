@@ -7,6 +7,8 @@ import random
 import string
 import subprocess
 
+from ..utils import nlp
+
 
 def get_random_string(length):
     letters = string.ascii_lowercase
@@ -18,9 +20,9 @@ def _split_punc(abstract):
     """abstract preprocessing"""
     if isinstance(abstract, str):
         new_abs = [[]]
-        for e in re.sub(r'([\.,:;()])', r' \1 ', abstract).split():
-            new_abs[-1] += [e]
-            if e == '.':
+        for word in nlp(abstract):
+            new_abs[-1] += [word.text]
+            if word.text == '.':
                 new_abs += [[]]
         return new_abs[:-1]
     elif isinstance(abstract, list):

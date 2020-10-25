@@ -4,6 +4,8 @@ import json
 import glob
 import subprocess
 
+from ..utils import nlp
+
 
 # TODO: Make it object-oriented
 # TODO: Make an extract in SpERT to be directly called and returned
@@ -11,7 +13,7 @@ import subprocess
 def _split_punc(abstract):
     """abstract preprocessing"""
     if isinstance(abstract, str):
-        return re.sub(r'([\.,:;()])', r' \1 ', abstract).split()
+        return ' '.join([word.text for word in nlp(abstract)])
     elif isinstance(abstract, list):
         return [_split_punc(a) for a in abstract]
     

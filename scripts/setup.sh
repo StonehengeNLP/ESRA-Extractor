@@ -29,6 +29,7 @@ cd ..
 
 # Setup for ESRA
 pip3 install -r requirements.txt
+python3 -m spacy download en
 python3 -m spacy download en_core_web_lg
 python3 -m spacy download en_core_web_md
 python3 -m spacy download en_core_web_sm
