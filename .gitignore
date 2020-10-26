@@ -1,4 +1,9 @@
+# python
 __pycache__/
 *.py[cod]
 
+# mac DS_Store
+.DS_Store
+
+# output data
 data/
