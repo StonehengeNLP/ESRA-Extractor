@@ -1,4 +1,36 @@
 from ..esra.transformers.abbreviation_splitter import abbreviation_split
 
-def test():
-    pass
+def test_abbreviation_split():
+    data_in = {'entities': [['OtherScientificTerm', 'black-box nature'],
+                            ['Method', 'deep learning models'], 
+                            ['Generic', 'methods'],
+                            ['Generic', 'models'],
+                            ['Method', 'model-agnostic and model-specific explanation methods'],
+                            ['Method', 'Convolution Neural Network ( CNN ) challenge'],
+                            ['Task', 'text classification'],
+                            ['Task', 'human-grounded evaluations'],
+                            ['OtherScientificTerm', 'model behavior'],
+                            ['Method', 'model predictions'],
+                            ['Method', 'explanation methods'],
+                            ['Generic', 'methods']],
+                'relations':[['USED-FOR', 5, 2],
+                            ['USED-FOR', 3, 5],
+                            ['USED-FOR', 1, 7]]}
+    data_out = {'entities': [['OtherScientificTerm', 'black-box nature'], 
+                            ['Method', 'deep learning models'], 
+                            ['Generic', 'methods'], 
+                            ['Generic', 'models'],
+                            ['Method', 'model-agnostic and model-specific explanation methods'], 
+                            ['Method', 'Convolution Neural Network challenge'], 
+                            ['Task', 'text classification'], 
+                            ['Task', 'human-grounded evaluations'], 
+                            ['OtherScientificTerm', 'model behavior'],
+                            ['Method', 'model predictions'],
+                            ['Method', 'explanation methods'],
+                            ['Generic', 'methods'],
+                            ['Abbreviation', 'CNN']],
+                'relations': [['USED-FOR', 5, 2],
+                            ['USED-FOR', 3, 5],
+                            ['USED-FOR', 1, 7],
+                            ['Refer-to', 12, 5]]}
+    assert data_out == abbreviation_split(data_in)
