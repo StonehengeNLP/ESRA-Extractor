@@ -155,12 +155,12 @@ if __name__ == '__main__':
     for i in range(len(results)):
         entities = results[i]['entities']
         corefs = results[i]['coref']
-        e_set = {(e['start'], e['end']) for e in entities}
+        e_set = {e['start'] for e in entities}
         filtered_cluster = []
         for cluster in corefs:
             filtered_entity = []
             for e in cluster:
-                if (e[0], e[1]+1) in e_set:
+                if e[0] in e_set:
                     filtered_entity += [tuple(e)]
             if len(filtered_entity) != 0:
                 filtered_cluster.append(tuple(filtered_entity))
