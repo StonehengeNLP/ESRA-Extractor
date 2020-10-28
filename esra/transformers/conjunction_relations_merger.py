@@ -158,35 +158,3 @@ def merge_conjuction_relation(data):
     relations =  other_relations + new_relations
 
     return {'entities':entities,'relations':relations}
-
-# 
-data = {'entities': [['Task', 'language understanding'],
-                     ['Method', 'convolutional architecture'],
-                     ['Method', 'Dynamic Convolutional Neural Network'],
-                     ['Task', 'semantic modelling'],
-                     ['Method', 'Dynamic k-Max Pooling'],
-                     ['Method', 'global pooling operation'],
-                     ['OtherScientificTerm', 'feature graph'],
-                     ['OtherScientificTerm', 'parse tree'],
-                     ['Task', 'multi-class sentiment prediction'],
-                     ['Task', 'six-way question classification'],
-                     ['Task', 'Twitter sentiment prediction'],
-                     ['OtherScientificTerm', 'distant supervision'],
-                     ['Abbreviation', 'DCNN']],
-         'relations': [['HYPONYM-OF', 2, 1],
-                       ['HYPONYM-OF', 2, 1],
-                       ['USED-FOR', 4, 2],
-                       ['USED-FOR', 7, 2],
-                       ['CONJUNCTION', 8, 9],
-                       ['CONJUNCTION', 8, 10],
-                       ['CONJUNCTION', 9, 10],
-                       ['USED-FOR', 11, 10],
-                       ['REFER-TO', 12, 2]]}
-print(merge_conjuction_relation(data))
-
-# for testing special case group have relation with group
-data = {'entities': [['t','1'],['t','2'],['t','3'],['t','4'],['t','5'],['t','6'],['t','7'],['t','8']],
-        'relations': [['CONJUNCTION', 1, 2],['CONJUNCTION', 1, 3],['CONJUNCTION', 2, 3],
-                    ['CONJUNCTION', 6, 7],['CONJUNCTION', 6, 8],['CONJUNCTION', 7, 8],
-                    ['USED-FOR',1,6]]}
-print(merge_conjuction_relation(data))
