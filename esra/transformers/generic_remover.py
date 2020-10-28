@@ -52,34 +52,3 @@ def remove_generic(data):
 
     return {'entities':entities,'relations':relations}
     
-
-# # for testing this module
-# data = {'entities': [['Task', 'language understanding'],
-#   ['Method', 'convolutional architecture'],
-#   ['Method', 'Dynamic Convolutional Neural Network'],
-#   ['Task', 'semantic modelling'],
-#   ['Method', 'Dynamic k-Max Pooling'],
-#   ['Method', 'global pooling operation'],
-#   ['OtherScientificTerm', 'feature graph'],
-#   ['OtherScientificTerm', 'parse tree'],
-#   ['Generic', 'experiment'],
-#   ['Task', 'multi-class sentiment prediction'],
-#   ['Task', 'six-way question classification'],
-#   ['Task', 'Twitter sentiment prediction'],
-#   ['OtherScientificTerm', 'distant supervision'],
-#   ['Abbreviation', 'DCNN']],
-#  'relations': [['HYPONYM-OF', 2, 1],
-#   ['HYPONYM-OF', 2, 1],
-#   ['USED-FOR', 4, 2],
-#   ['USED-FOR', 7, 2],
-#   ['EVALUATE-FOR', 8, 2],
-#   ['HYPONYM-OF', 9, 8],
-#   ['CONJUNCTION', 9, 10],
-#   ['CONJUNCTION', 9, 11],
-#   ['HYPONYM-OF', 10, 8],
-#   ['CONJUNCTION', 10, 11],
-#   ['HYPONYM-OF', 11, 8],
-#   ['USED-FOR', 12, 11],
-#   ['REFER-TO', 13, 2]]}
-
-# print(remove_generic(data))
