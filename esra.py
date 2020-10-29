@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import pickle
 
+from esra.extractors import ESRAE 
 from esra.transformers.entity_merging import coreference_handler
 from esra.transformers.post_processing import Post_processor
 from esra.transformers.generic_remover import remove_generic
