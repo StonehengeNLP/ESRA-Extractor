@@ -200,9 +200,9 @@ class Post_processor:
         
         # append the entities
         for i in list(_changes.keys())[::-1]:
-            entities.pop(i)
+            _type, _name = entities.pop(i)
             for _n in _changes[i]:
-                entities.insert(i, [entities[i][0], _n])
+                entities.insert(i, [_type, _n])
         
         # create index mapping
         _index_map = []
