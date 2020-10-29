@@ -42,7 +42,7 @@ class CycleCounter:
     
         for (rt_index,rt) in enumerate(self.relation_types):
             for current_rt,s_index,e_index in relations:
-                if current_rt == rt:
+                if current_rt.upper() == rt:
                     adjancency_lists[rt_index][s_index].append(e_index)
         return adjancency_lists
 
