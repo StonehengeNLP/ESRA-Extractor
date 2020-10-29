@@ -18,11 +18,11 @@ def __coref_handler(
     for idx in cluster:
         entity = entities[idx]
         # check entity's type, ignore `generic` type
-        if entity[0].lower() != "generic":
-            length = len(entity[1])
-            if length > max_length:
-                max_length = length
-                head = idx
+        # if entity[0].lower() != "generic":
+        length = len(entity[1])
+        if length > max_length:
+            max_length = length
+            head = idx
     subs = cluster.copy()
     subs.remove(head)
     return (head, subs) 
