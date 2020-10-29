@@ -14,7 +14,9 @@ def custom_tokenizer(nlp):
             ),
             r"(?<=[{a}]),(?=[{a}])".format(a=ALPHA),
             #r"(?<=[{a}])(?:{h})(?=[{a}])".format(a=ALPHA, h=HYPHENS),
-            r"(?<=[{a}0-9])[:<>=/](?=[{a}])".format(a=ALPHA),
+            r"(?<=[{a}0-9])[:<>=](?=[{a}])".format(a=ALPHA),
+            r"(?:[{a}]\.)+ [{a}0-9]".format(a=ALPHA),
+            # r"(?<=et) (?=al\.)",
         ]
     )
 
@@ -29,3 +31,4 @@ def custom_tokenizer(nlp):
 
 nlp = spacy.load("en")
 nlp.tokenizer = custom_tokenizer(nlp)
+
