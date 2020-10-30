@@ -157,4 +157,8 @@ def merge_conjuction_relation(data):
     new_relations = __get_new_relations(entities_mapping,other_relations)
     relations =  other_relations + new_relations
 
+    # remove duplicates
+    relations = {tuple(relation) for relation in relations}
+    relations = [list(relation) for relation in relations]
+
     return {'entities':entities,'relations':relations}
