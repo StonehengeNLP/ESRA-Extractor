@@ -8,8 +8,8 @@ from esra.transformers.entity_merging import duplicate_entity_handler
 from esra.transformers.abbreviation_splitter import abbreviation_split
 from esra.transformers.cycle_counter import CycleCounter
 
-with open('../pickle/triple_CNN_10.pickle', 'rb') as f:
-        list_data = pickle.load(f)
+with open('./pickle/triple_CNN_10.pickle', 'rb') as f:
+    list_data = pickle.load(f)
 
 list_valid_data = []
 list_invalid_data = []
@@ -30,6 +30,6 @@ for (i,data) in enumerate(list_data):
     else:
         list_valid_data.append(data)
 
-with open('../pickle/triple_CNN_10_cleaned.pickle','wb') as f:
+with open('./pickle/triple_CNN_10_cleaned.pickle','wb') as f:
         pickle.dump(list_valid_data,f)
         print("Done!")
