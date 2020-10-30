@@ -120,13 +120,21 @@ if __name__ == '__main__':
         # abstract = abstract.replace('-LSB- ', '[')
         # abstract = abstract.replace(' -RSB-', ']')
         # abstract = abstract.replace(' -- ', '-')
-        # abstract = abstract.replace('`', '')
+        abstract = abstract.replace('`', "'")
         # abstract = abstract.replace('"', '')
         # abstract = abstract.replace("'", '')
+        abstract = abstract.replace(" .", '.')
         abstracts += [abstract]
 
     documents = unroll_document(documents)
     results = ESRAE.extract(abstracts, interpret=False)
+    
+    assert len(documents) == len(results)
+    for i, j in zip(documents, results):
+        try:
+            assert len(i['tokens']) == len(j['tokens'])
+        except:
+            print(i['tokens'], j['tokens'])
 
     # Compute entity F1
     gold_entities = [d['entities'] for d in documents]

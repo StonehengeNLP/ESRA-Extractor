@@ -1,3 +1,5 @@
+import copy
+
 class CycleCounter:
     """
         cycle_counter class for ESRA validator module.
@@ -7,7 +9,7 @@ class CycleCounter:
 
     def __init__(self,threshold):
         # init the list of relation_types that this module going to check
-        self.relation_types = ['Part-of','Evaluate-for','Used-for','Feature-of','Hyponym-of','Refer-to']
+        self.relation_types = ['PART-OF','EVALUATE-FOR','USED-FOR','FEATURE-OF','HYPONYM-OF','REFER-TO']
         self.threshold = threshold
 
     def set_threshold(self,threshold):
@@ -41,7 +43,7 @@ class CycleCounter:
     
         for (rt_index,rt) in enumerate(self.relation_types):
             for current_rt,s_index,e_index in relations:
-                if current_rt == rt:
+                if current_rt.upper() == rt:
                     adjancency_lists[rt_index][s_index].append(e_index)
         return adjancency_lists
 
@@ -124,29 +126,24 @@ class CycleCounter:
                 boolean: True -> valid, False -> Invalid
 
         """
-        if(self.__count_cycle(data) > self.threshold):
-            return False
-        else:
+        
+        if (self.__count_cycle(data) > self.threshold):
             return True
+        else:
+            return False
 
-
-
-## for testing this module
-# data = {'entities': [['OtherScientificTerm', 'black-box nature'],
-#               ['Method', 'deep learning models'], 
-#               ['Generic', 'methods'],
-#               ['Generic', 'models'],
-#               ['Method', 'model-agnostic and model-specific explanation methods'],
-#               ['Method', 'CNNs'],
-#               ['Task', 'text classification'],
-#               ['Task', 'human-grounded evaluations'],
-#               ['OtherScientificTerm', 'model behavior'],
-#               ['Method', 'model predictions'],
-#               ['Method', 'explanation methods'],
-#               ['Generic', 'methods']],
-#        'relations':[['USED-FOR', 1, 2],
-#               ['USED-FOR', 2, 3],
-#               ['USED-FOR', 7, 7]]
-#         }
-# cc = CycleCounter(threshold=2)
-# print(cc.cyclic_validate(data))
+    def drop_self_loops(self, data):
+        """
+            Drop self loops for every relation types
+            because they are always wrong and 
+            do not need further consensus
+            
+            params:
+                data
+            return:
+                data without self loops
+        """
+        
+        data = copy.deepcopy(data)
+        data['relations'] = [[_type, head, tail] for _type, head, tail in data['relations'] if head != tail]
+        return data

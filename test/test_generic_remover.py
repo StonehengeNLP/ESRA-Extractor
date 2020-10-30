@@ -1,0 +1,57 @@
+from ..esra.transformers.generic_remover import remove_generic
+
+def test_remove_generic():
+
+    data_in = {'entities': [['Task', 'language understanding'],
+                ['Method', 'convolutional architecture'],
+                ['Method', 'Dynamic Convolutional Neural Network'],
+                ['Task', 'semantic modelling'],
+                ['Method', 'Dynamic k-Max Pooling'],
+                ['Method', 'global pooling operation'],
+                ['OtherScientificTerm', 'feature graph'],
+                ['OtherScientificTerm', 'parse tree'],
+                ['Generic', 'experiment'],
+                ['Task', 'multi-class sentiment prediction'],
+                ['Task', 'six-way question classification'],
+                ['Task', 'Twitter sentiment prediction'],
+                ['OtherScientificTerm', 'distant supervision'],
+                ['Abbreviation', 'DCNN']],
+            'relations': [['HYPONYM-OF', 2, 1],
+                ['HYPONYM-OF', 2, 1],
+                ['USED-FOR', 4, 2],
+                ['USED-FOR', 7, 2],
+                ['EVALUATE-FOR', 8, 2],
+                ['HYPONYM-OF', 9, 8],
+                ['CONJUNCTION', 9, 10],
+                ['CONJUNCTION', 9, 11],
+                ['HYPONYM-OF', 10, 8],
+                ['CONJUNCTION', 10, 11],
+                ['HYPONYM-OF', 11, 8],
+                ['USED-FOR', 12, 11],
+                ['REFER-TO', 13, 2]]}
+
+
+    data_out = {'entities': [['Task', 'language understanding'],
+                ['Method', 'convolutional architecture'],
+                ['Method', 'Dynamic Convolutional Neural Network'],
+                ['Task', 'semantic modelling'],
+                ['Method', 'Dynamic k-Max Pooling'],
+                ['Method', 'global pooling operation'],
+                ['OtherScientificTerm', 'feature graph'],
+                ['OtherScientificTerm', 'parse tree'],
+                ['Task', 'multi-class sentiment prediction'],
+                ['Task', 'six-way question classification'],
+                ['Task', 'Twitter sentiment prediction'],
+                ['OtherScientificTerm', 'distant supervision'],
+                ['Abbreviation', 'DCNN']],
+            'relations': [['HYPONYM-OF', 2, 1],
+                ['HYPONYM-OF', 2, 1],
+                ['USED-FOR', 4, 2],
+                ['USED-FOR', 7, 2],
+                ['CONJUNCTION', 8, 9],
+                ['CONJUNCTION', 8, 10],
+                ['CONJUNCTION', 9, 10],
+                ['USED-FOR', 11, 10],
+                ['REFER-TO', 12, 2]]}
+
+    assert data_out == remove_generic(data_in)

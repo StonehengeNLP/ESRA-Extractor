@@ -22,7 +22,7 @@ def __split_conj_relation(relations):
     other_relations = []
 
     for relation in relations:
-        if relation[0] == 'CONJUNCTION':
+        if relation[0].upper() == 'CONJUNCTION':
             list_conj.append([relation[1],relation[2]])
         else:
             other_relations.append(relation)
@@ -156,5 +156,9 @@ def merge_conjuction_relation(data):
     entities_mapping = __get_entity_mapping(list_conj_group,entities)
     new_relations = __get_new_relations(entities_mapping,other_relations)
     relations =  other_relations + new_relations
+
+    # remove duplicates
+    relations = {tuple(relation) for relation in relations}
+    relations = [list(relation) for relation in relations]
 
     return {'entities':entities,'relations':relations}
