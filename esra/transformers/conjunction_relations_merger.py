@@ -22,7 +22,7 @@ def __split_conj_relation(relations):
     other_relations = []
 
     for relation in relations:
-        if relation[0] == 'CONJUNCTION':
+        if relation[0].upper() == 'CONJUNCTION':
             list_conj.append([relation[1],relation[2]])
         else:
             other_relations.append(relation)
