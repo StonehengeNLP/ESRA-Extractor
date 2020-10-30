@@ -24,7 +24,8 @@ for (i,data) in enumerate(list_data):
     data = merge_conjuction_relation(data)
     data = duplicate_entity_handler(data)
     data = abbreviation_split(data)
-
+    data = cc.drop_self_loops(data)
+    
     if cc.cyclic_validate(data):
         list_invalid_data.append(data)
     else:

@@ -1,3 +1,4 @@
+import copy
 
 class CycleCounter:
     """
@@ -126,7 +127,23 @@ class CycleCounter:
 
         """
         
-        if(self.__count_cycle(data) > self.threshold):
+        if (self.__count_cycle(data) > self.threshold):
             return True
         else:
             return False
+
+    def drop_self_loops(self, data):
+        """
+            Drop self loops for every relation types
+            because they are always wrong and 
+            do not need further consensus
+            
+            params:
+                data
+            return:
+                data without self loops
+        """
+        
+        data = copy.deepcopy(data)
+        data['relations'] = [[_type, head, tail] for _type, head, tail in data['relations'] if head != tail]
+        return data
