@@ -145,8 +145,18 @@ with open('paper_id.txt','w') as f:
 with open('../../pickle/triple_CNN_10_cleaned.pickle','rb') as f:
     list_data = pickle.load(f)
 
-list_data = add_paperid(list_data)
-list_triples = objects_to_triples(list_data)
+# prepare data
+list_data = add_paperid(list_data) # add id to paper only for this example
+
+# create exising KG
+existed_list_data = list_data[0:-1] # paper_id 0-8 assign to be exising KG
+existed_list_triples = objects_to_triples(existed_list_data) # change data object to triple
 existing_kg = []
-existing_kg = merging_to_kg(list_triples,existing_kg)
+existing_kg = merging_to_kg(existed_list_triples,existing_kg) # create existing KG
+
+# simulate the case that we add new paper
+new_data = list_data[-1:] # paper_id 9 assign to be new paper that going to merge to KG
+new_list_triples = objects_to_triples(new_data) 
+existing_kg = merging_to_kg(new_list_triples,existing_kg) # merge new paper to existing KG
+
 print(existing_kg)
