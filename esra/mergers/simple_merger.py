@@ -128,13 +128,13 @@ def merging_to_kg(list_triples,existing_kg):
 
             - existing_kg: Existing KG which already merged.
     """
-    for papar_id,triples in list_triples:
+    for paper_id,triples in list_triples:
         for triple in triples:
             check_existing,idx = existing_in_kg(triple,existing_kg)
         if check_existing == True:
             existing_kg[idx][1].add(paper_id)
         else:
-            existing_kg.append([triple,set([papar_id])])
+            existing_kg.append([triple,set([paper_id])])
     return existing_kg
 
 #if you want to restart the flow please uncomment and run this code below:
