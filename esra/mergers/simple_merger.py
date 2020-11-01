@@ -1,8 +1,10 @@
 import pickle
-import os
+import os, sys
 import numpy as np
 
-from ..transformers.entity_linking.generator import *
+sys.path.append("../transformers/")
+
+from entity_linker import *
 
 
 def add_paperid(list_obj):
