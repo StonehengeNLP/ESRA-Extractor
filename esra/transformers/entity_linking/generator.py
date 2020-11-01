@@ -22,7 +22,7 @@ model = AutoModel.from_pretrained('allenai/scibert_scivocab_uncased')
 # Constant var
 DIMENTIONS = 768
 NUM_TREE = 10
-NUM_NEIGHBOR = 5
+NUM_NEIGHBOR = 3
 SIMILARITY_THRESHOLD = 0.9
 
 def generate_vector(entity_name:str) -> np.ndarray:
