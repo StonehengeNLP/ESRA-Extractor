@@ -165,7 +165,7 @@ new_data = list_data[-1:] # paper_id 9 assign to be new paper that going to merg
 ## Entity linking  ##
 
 # load vectors and entities of existing KG
-with open("../../pickle/vector_9.pickle", "rb") as f:
+with open("../../pickle/vectors_9.pickle", "rb") as f:
     tmp = pickle.load(f)
     vectors = tmp["vectors"]
     entities = tmp["entities"]
