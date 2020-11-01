@@ -29,8 +29,9 @@ def generate_vector(entity_name:str) -> np.ndarray:
     """
         Return entity name embedding numpy array
     """
+    tokens = tokenizer(entity_name, return_tensors="pt")
     with torch.no_grad():
-        out = model(entity_name)[0].mean(dim=1).view(-1)
+        out = model(**tokens)[0].mean(dim=1).view(-1)
     return out.detach().numpy()
     
 def save_tree(vectors, f_name='vec.ann'):
