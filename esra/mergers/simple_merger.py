@@ -183,7 +183,7 @@ print("## Entity linking ##")
 for i,kg_idx in enumerate(link_indexes):
     if kg_idx != -1:
         print(
-            f"%s link to %s" % (new_data["entities"][i][1], entities[kg_idx])
+            f"%s link to %s" % (new_data[0]["entities"][i][1], entities[kg_idx])
         )
     else:
         print("Unlink")
