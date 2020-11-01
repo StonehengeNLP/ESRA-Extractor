@@ -22,6 +22,8 @@ model = AutoModel.from_pretrained('allenai/scibert_scivocab_uncased')
 # Constant var
 DIMENTIONS = 768
 NUM_TREE = 10
+NUM_NEIGHBOR = 5
+SIMILARITY_THRESHOLD = 0.9
 
 def generate_vector(entity_name:str) -> np.ndarray:
     """
@@ -43,27 +45,43 @@ def save_tree(vectors, f_name='vec.ann'):
     t.build(NUM_TREE)
     t.save(f_name)
 
-def search_knn(input_vector, k=10, f_name="vec.ann"):
+def cosine_similarity(a,b):
+    na = np.linalg.norm(a)
+    nb = np.linalg.norm(b)
+    return (a @ b.T)/(na*nb)     
+
+def doc_kg_linking(document_entities, f_name='vec.ann'):
     """
-        Return indexes of KNN sorted by similarity
-
-        params:
-
-            - input_vector(np.ndarray): input search vector
-
-            - k(int): number of neighbor
+        generate index of KG entity that doc link to
+        if unlinkingable then reptresent with -1
     """
-
-    # tree
+    # load tree
     if not os.path.exists(f_name):
         raise FileNotFoundError("Missing tree file")
-
     t = AnnoyIndex(DIMENTIONS, 'angular')
     t.load(f_name)
-    result_indexes = t.get_nns_by_vector(
-        input_vector,
-        k,
-        search_k=-1,
-        include_distances=False
+
+    # store index
+    kg_indexes = []
+
+    # for each document entity
+    for entity in document_entities['entities']:
+        input_vector = generate_vector(entity[1])
+        k_indexes = t.get_nns_by_vector(
+            input_vector,
+            NUM_NEIGHBOR,
+            search_k=-1,
+            include_distances=False
         )
-    return result_indexes
+        # check cosine similarity
+        max_cos_sim = cosine_similarity(
+            input_vector,
+            np.array(t.get_item_vector(k_indexes[0]))
+        )
+        if max_cos_sim < SIMILARITY_THRESHOLD: 
+            kg_indexes.append(-1)
+        else:
+            # select node with max cosine similarity
+            kg_indexes.append(k_indexes[0])
+
+    return kg_indexes
