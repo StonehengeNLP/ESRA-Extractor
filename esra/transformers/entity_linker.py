@@ -9,7 +9,7 @@ except:
     raise ImportError("Unable to load transformers")
 
 try:
-    import annoy
+    from annoy import AnnoyIndex
 except:
     raise ImportError("Unable to load annoy")
 
