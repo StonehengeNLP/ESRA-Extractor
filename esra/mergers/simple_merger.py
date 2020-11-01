@@ -2,7 +2,7 @@ import pickle
 import os
 import numpy as np
 
-from esra.transformers.entity_linking.generator import *
+from ..transformers.entity_linking.generator import *
 
 
 def add_paperid(list_obj):
