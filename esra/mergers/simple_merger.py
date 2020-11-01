@@ -175,7 +175,7 @@ if not os.path.exists("vec.ann"):
     save_tree(vectors)
 
 # link document entities to KG entities
-link_indexes = doc_kg_linking(new_data["entities"])
+link_indexes = doc_kg_linking(new_data[0]["entities"])
 
 # Test print link
 print("## Entity linking ##")
