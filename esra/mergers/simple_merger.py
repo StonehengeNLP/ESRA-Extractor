@@ -137,6 +137,8 @@ def merging_to_kg(list_triples,existing_kg):
             existing_kg.append([triple,set([paper_id])])
     return existing_kg
 
+
+
 #if you want to restart the flow please uncomment and run this code below:
 with open('paper_id.txt','w') as f:
         f.write('-1')
