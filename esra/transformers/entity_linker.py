@@ -39,7 +39,7 @@ def save_tree(vectors, f_name='vec.ann'):
     """
     t = AnnoyIndex(DIMENTIONS, 'angular') # init angular(cosine) index
     
-    for i,v in vectors:
+    for i,v in enumerate(vectors):
         t.add_item(i,v)
     
     t.build(NUM_TREE)
