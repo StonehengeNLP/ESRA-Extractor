@@ -65,7 +65,7 @@ def doc_kg_linking(document_entities, f_name='vec.ann'):
     kg_indexes = []
 
     # for each document entity
-    for entity in document_entities['entities']:
+    for entity in document_entities:
         input_vector = generate_vector(entity[1])
         k_indexes = t.get_nns_by_vector(
             input_vector,
