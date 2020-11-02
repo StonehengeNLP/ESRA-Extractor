@@ -17,7 +17,11 @@ except:
 tokenizer = AutoTokenizer.from_pretrained(
     'allenai/scibert_scivocab_uncased'
     )
-model = AutoModel.from_pretrained('allenai/scibert_scivocab_uncased')
+model = AutoModel.from_pretrained(
+    'allenai/scibert_scivocab_uncased',
+    output_hidden_states=True
+    )
+model.eval()
 
 # Constant var
 DIMENTIONS = 768
@@ -31,7 +35,10 @@ def generate_vector(entity_name:str) -> np.ndarray:
     """
     tokens = tokenizer(entity_name, return_tensors="pt")
     with torch.no_grad():
-        out = model(**tokens)[0].mean(dim=1).view(-1)
+        model_output = model(**tokens)
+    hidden_states = model_output[2]
+    # create sentence embedding frim hidden states 
+    out = hidden_states[-2][0].mean(dim=0)
     return out.detach().numpy()
     
 def save_tree(vectors, f_name='vec.ann'):
