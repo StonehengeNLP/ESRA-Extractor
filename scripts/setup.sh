@@ -33,3 +33,6 @@ python3 -m spacy download en
 python3 -m spacy download en_core_web_lg
 python3 -m spacy download en_core_web_md
 python3 -m spacy download en_core_web_sm
+
+# download SciBERT pretrained
+wget -P ../ https://s3-us-west-2.amazonaws.com/ai2-s2-research/scibert/huggingface_pytorch/scibert_scivocab_uncased.tar 

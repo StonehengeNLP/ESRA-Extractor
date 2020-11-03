@@ -16,3 +16,7 @@ data/
 
 # Annoy's tree
 *.ann
+
+# SciBERT pretrained 
+scibert_scivocab_uncased/
+scibert_scivocab_uncased.tar
