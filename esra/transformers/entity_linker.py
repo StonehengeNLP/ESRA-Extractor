@@ -13,12 +13,15 @@ try:
 except:
     raise ImportError("Unable to load annoy")
 
+
+# SciBERT pretrained model folder is in transformers/
+
 # init Scibert model
 tokenizer = AutoTokenizer.from_pretrained(
-    'allenai/scibert_scivocab_uncased'
+    'scibert_scivocab_uncased/'
     )
 model = AutoModel.from_pretrained(
-    'allenai/scibert_scivocab_uncased',
+    'scibert_scivocab_uncased/',
     output_hidden_states=True
     )
 model.eval()
@@ -33,9 +36,9 @@ def generate_vector(entity_name:str) -> np.ndarray:
     """
         Return entity name embedding numpy array
     """
-    tokens = tokenizer(entity_name, return_tensors="pt")
+    tokens = tokenizer.encode(entity_name, return_tensors='pt')
     with torch.no_grad():
-        model_output = model(**tokens)
+        model_output = model(tokens)
     hidden_states = model_output[2]
     # create sentence embedding frim hidden states 
     out = hidden_states[-2][0].mean(dim=0)
