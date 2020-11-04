@@ -17,11 +17,12 @@ except:
 # SciBERT pretrained model folder is in transformers/
 
 # init Scibert model
-tokenizer = AutoTokenizer.from_pretrained(
-    'scibert_scivocab_uncased/'
+# Fix transformers package version to 2.11.0 pls
+tokenizer = BertTokenizer.from_pretrained(
+    'allenai/scibert_scivocab_uncased'
     )
-model = AutoModel.from_pretrained(
-    'scibert_scivocab_uncased/',
+model = BertModel.from_pretrained(
+    'allenai/scibert_scivocab_uncased',
     output_hidden_states=True
     )
 model.eval()
