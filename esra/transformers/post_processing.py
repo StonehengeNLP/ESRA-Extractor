@@ -191,7 +191,7 @@ class Post_processor:
         _changes = {}
         
         # split the conjuncted entities
-        for i, (_type, _name) in enumerate(entities):
+        for i, (_type, _name, _confidence) in enumerate(entities):
             processed_entities = self._post_processing(_name)
             if len(processed_entities) == 1:
                 entities[i][1] = processed_entities[0]
@@ -200,7 +200,7 @@ class Post_processor:
         
         # append the entities
         for i in list(_changes.keys())[::-1]:
-            _type, _name = entities.pop(i)
+            _type, _name, _confidence = entities.pop(i)
             for _n in _changes[i]:
                 entities.insert(i, [_type, _n])
         

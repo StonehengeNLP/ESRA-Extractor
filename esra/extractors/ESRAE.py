@@ -15,10 +15,10 @@ def _interpret(result):
     for e in entities:
         word = ' '.join(tokens[e['start']:e['end']])
         words[e['start']] = len(words)
-        out_entities += [[e['type'], word]]
+        out_entities += [[e['type'], word, e['confidence']]]
  
     for r in relations:
-        out_relations += [[r['type'], r['head'], r['tail']]]
+        out_relations += [[r['type'], r['head'], r['tail'], r['confidence']]]
 
     # the corefs from SciERC which refer to none entity in SpERT will be ejected
     for c in coref:
