@@ -1,5 +1,5 @@
 import spacy
-
+import inflection
 try:
     import en_core_web_md
 except ModuleNotFoundError:
@@ -162,7 +162,7 @@ class Post_processor:
             Return entire entity name with last token being 
             tokenize
         """
-        return doc[:-1].text + " " + doc[-1].lemma_
+        return doc[:-1].text + " " + inflection.singularize(doc[-1].text)
 
     def _post_processing(self, entity):
         """
