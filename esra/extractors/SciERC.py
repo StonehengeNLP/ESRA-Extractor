@@ -7,7 +7,7 @@ import random
 import string
 import subprocess
 
-from ..utils import nlp
+from ..utils import nlp_split
 
 
 def get_random_string(length):
@@ -20,7 +20,7 @@ def _split_punc(abstract):
     """abstract preprocessing"""
     if isinstance(abstract, str):
         new_abs = [[]]
-        for word in nlp(abstract):
+        for word in nlp_split(abstract):
             new_abs[-1] += [word.text]
             if word.text == '.':
                 new_abs += [[]]
