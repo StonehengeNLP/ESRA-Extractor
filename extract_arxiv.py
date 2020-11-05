@@ -7,7 +7,7 @@ import pandas as pd
 from esra.extractors import ESRAE 
 from esra.utils import nlp_split
 
-for filename in glob.glob('arxiv/*.csv')[-1:]:
+for filename in glob.glob('arxiv/*.csv')[2:3]:
     print(filename)
     
     df = pd.read_csv(filename)

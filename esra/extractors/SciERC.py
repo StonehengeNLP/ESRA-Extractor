@@ -10,11 +10,8 @@ import subprocess
 from ..utils import nlp_split
 
 
-def get_random_string(length):
-    letters = string.ascii_lowercase
-    result_str = ''.join(random.choice(letters) for i in range(length))
-    return result_str
-
+def _hash_list(l:list):
+    return str(hash(str(l)))
 
 def _split_punc(abstract):
     """abstract preprocessing"""
@@ -36,7 +33,7 @@ def _dump_json_data(abstracts):
             "sentences": abstract,
             "ner": [[] for _ in range(len(abstract))],
             "relation": [[] for _ in range(len(abstract))],
-            "doc_key": get_random_string(20)} for abstract in abstracts]
+            "doc_key": _hash_list(abstract)} for abstract in abstracts]
         
     with open('./data/processed_data/json/dev.json', 'w') as f:
         for line in data:
