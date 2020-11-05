@@ -97,3 +97,20 @@ def doc_kg_linking(document_entities, f_name='vec.ann'):
             kg_indexes.append(k_indexes[0])
 
     return kg_indexes
+
+
+# change to class
+class Entity_Linker:
+    
+    self.tokenizer = BertTokenizer.from_pretrained(
+        'allenai/scibert_scivocab_uncased'
+    )
+    self.model = BertModel.from_pretrained(
+        'allenai/scibert_scivocab_uncased',
+        output_hidden_states=True
+    )
+    self.model.eval()
+
+    # def __init__(self):
+    
+        
