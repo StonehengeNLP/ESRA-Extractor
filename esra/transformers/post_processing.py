@@ -191,7 +191,7 @@ class Post_processor:
         _changes = {}
         
         # split the conjuncted entities
-        for i, (_type, _name) in enumerate(entities):
+        for i, (_type, _name, _confidence) in enumerate(entities):
             processed_entities = self._post_processing(_name)
             if len(processed_entities) == 1:
                 entities[i][1] = processed_entities[0]
@@ -200,9 +200,9 @@ class Post_processor:
         
         # append the entities
         for i in list(_changes.keys())[::-1]:
-            _type, _name = entities.pop(i)
+            _type, _name, _confidence = entities.pop(i)
             for _n in _changes[i]:
-                entities.insert(i, [_type, _n])
+                entities.insert(i, [_type, _n, _confidence])
         
         # create index mapping
         _index_map = []
@@ -222,15 +222,15 @@ class Post_processor:
                 relations.pop(_i)
                 for j in range(len(_changes[relation[1]])):
                     for k in range(len(_changes[relation[2]])):
-                        relations.insert(_i + j + k, [relation[0], relation[1] + j, relation[2] + k])
+                        relations.insert(_i + j + k, [relation[0], relation[1] + j, relation[2] + k, relation[3]])
                 _i += len(_changes[relation[1]]) + len(_changes[relation[2]])
             elif relation[1] in _changes:
                 for j in range(1, len(_changes[relation[1]])):
-                    relations.insert(_i + j, [relation[0], relation[1] + j, relation[2]])
+                    relations.insert(_i + j, [relation[0], relation[1] + j, relation[2], relation[3]])
                 _i += len(_changes[relation[1]])
             elif relation[2] in _changes:
                 for j in range(1, len(_changes[relation[2]])):
-                    relations.insert(_i + j, [relation[0], relation[1], relation[2] + j])
+                    relations.insert(_i + j, [relation[0], relation[1], relation[2] + j, relation[3]])
                 _i += len(_changes[relation[2]])
             else:
                 relation[1] = _index_map[relation[1]]

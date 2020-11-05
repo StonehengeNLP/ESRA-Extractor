@@ -1,3 +1,46 @@
+import re
+import copy 
+import numpy as np
+import Levenshtein
+
+def _find_abbrv(list_of_candidate):
+    """return the index of abbreviation from the given candidates"""
+    # for trivial case
+    for i, c in enumerate(list_of_candidate):
+        if c == c.upper():
+            return i
+    # for complicated case
+    distances = [Levenshtein.distance(c, c.upper()) for c in list_of_candidate]
+    return np.argmin(distances)
+
+def abbreviation_split(data):
+    data = copy.deepcopy(data)
+    entities = data['entities']
+    relations = data['relations']
+    
+    for i, entity in enumerate(entities):
+        candidate_name = re.split(r'[(|)]', entity[1])
+        
+        # when the abbriviation was found
+        if len(candidate_name) > 1:
+            candidate_name = [n.strip() for n in candidate_name if len(n) > 1]
+            j = _find_abbrv(candidate_name[:2])
+            abbrv = candidate_name.pop(j)
+            entity[1] = ' '.join(candidate_name)
+            len_entities = len(entities)
+            entities.append(['Abbreviation', abbrv, 1.0])
+            
+            # in the case of parentheses are on the edge
+            if len(candidate_name) == 1:
+                relations.append(['Refer-to', len_entities, i, 1.0])
+            
+            # in the case of parentheses are in the middle
+            else:
+                entities.append([entity[0], candidate_name[0], entity[2]])
+                relations.append(['Refer-to', len_entities, len_entities+1, 1.0])
+    return data
+
+'''
 def abbreviation_split(data):
     """
         Split the entity that indluding abbreviation preserve
@@ -44,3 +87,4 @@ def abbreviation_split(data):
     data['relations'] = relations
 
     return data
+# '''

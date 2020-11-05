@@ -1,4 +1,5 @@
 import spacy
+import en_core_web_sm
 from spacy.tokenizer import Tokenizer
 from spacy.lang.char_classes import ALPHA, ALPHA_LOWER, ALPHA_UPPER, CONCAT_QUOTES, LIST_ELLIPSES, LIST_ICONS
 from spacy.util import compile_infix_regex
@@ -14,7 +15,7 @@ def custom_tokenizer(nlp):
             ),
             r"(?<=[{a}]),(?=[{a}])".format(a=ALPHA),
             #r"(?<=[{a}])(?:{h})(?=[{a}])".format(a=ALPHA, h=HYPHENS),
-            r"(?<=[{a}0-9])[:<>=](?=[{a}])".format(a=ALPHA),
+            r"(?<=[{a}0-9])[:<>=()](?=[{a}])".format(a=ALPHA),
             r"(?:[{a}]\.)+ [{a}0-9]".format(a=ALPHA),
             # r"(?<=et) (?=al\.)",
         ]
@@ -28,7 +29,9 @@ def custom_tokenizer(nlp):
                                 token_match=nlp.tokenizer.token_match,
                                 rules=nlp.Defaults.tokenizer_exceptions)
 
-
-nlp = spacy.load("en")
+nlp = en_core_web_sm.load()
 nlp.tokenizer = custom_tokenizer(nlp)
 
+def nlp_split(text):
+    text = ' '.join(text.split())
+    return nlp(text)
