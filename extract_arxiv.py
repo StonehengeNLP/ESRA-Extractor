@@ -13,6 +13,13 @@ for filename in glob.glob('arxiv/*.csv')[2:3]:
     df = pd.read_csv(filename)
     abstracts = df.abstract.to_list()
     r = ESRAE.extract(abstracts)
+    
+    # with open('./pickle/arxiv_cscl_200.pickle', 'rb') as f:
+    #     r = pickle.load(f)
+    
+    # label their id
+    for doc, id in zip(r, df.id):
+        doc['id'] = id
 
     with open(f'pickle/{filename[6:-4]}.pickle', 'wb') as f:
         pickle.dump(r, f)
