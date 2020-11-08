@@ -47,7 +47,7 @@ def generate_vector(entity_name:str) -> np.ndarray:
     hidden_states = model_output[2]
     # create sentence embedding frim hidden states 
     out = hidden_states[-2][0].mean(dim=0)
-    return out.detach().numpy()
+    return out.cpu().detach().numpy()
     
 def save_tree(vectors, f_name='vec.ann'):
     """
