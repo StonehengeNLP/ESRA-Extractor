@@ -19,7 +19,7 @@ except:
 
 # init Scibert model
 # Fix transformers package version to 2.11.0 pls
-device = torch.device('gpu' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 tokenizer = BertTokenizer.from_pretrained(
     'allenai/scibert_scivocab_uncased'
     )
