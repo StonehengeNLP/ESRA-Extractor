@@ -21,6 +21,37 @@ if __name__ == '__main__':
     
     r = ESRAE.extract(abstracts)
     print(r) #
-    # with open('triple_CNN_10.pickle', 'wb') as f:
-    #     pickle.dump(r, f)
+    list_valid_data = []
+    list_invalid_data = []
+    pp = Post_processor()
+    cc = CycleCounter(threshold=3)
+
+    for (i,data) in enumerate(r):
+
+        # > all field except entity, relation and coref were deleted
+        # > this just by-pass them, and i'wll fix it later
+        # meta = {k:v for k, v in data.items() if k not in {'entities', 'relations', 'coreferences'}}
+        
+        data = coreference_handler(data)
+        data = pp.post_processing(data)
+        data = remove_generic(data)
+        data = merge_conjuction_relation(data)
+        data = duplicate_entity_handler(data)
+        data = abbreviation_split(data)
+        data = cc.drop_self_loops(data)
+        
+        # > paste metadata here
+        # data.update(meta)
+
+        if cc.cyclic_validate(data):
+            list_invalid_data.append(data)
+        else:
+            list_valid_data.append(data)
     
+    print(list_invalid_data)
+    # dot = filename.rfind('.')
+    # out_filename = f'{filename[:dot]}_cleaned{filename[dot:]}'
+    # print(out_filename)
+    # with open(out_filename,'wb') as f:
+    #     pickle.dump(list_valid_data,f)
+    #     print("Done!")
