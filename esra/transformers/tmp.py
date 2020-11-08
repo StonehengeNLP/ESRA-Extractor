@@ -41,7 +41,7 @@ except:
 # Constant var
 DIMENTIONS = 768
 NUM_TREE = 10
-NUM_NEIGHBOR = 3
+NUM_NEIGHBOR = 5
 SIMILARITY_THRESHOLD = 0.9
 
 class Entity_Linker:
@@ -121,7 +121,7 @@ class Entity_Linker:
             else:
                 # select node with max cosine similarity
                 kg_indexes.append(k_indexes)
-
+        print(kg_indexes)
         return kg_indexes
 
     def word_structure_matching(self, document_entities):
