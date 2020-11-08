@@ -8,7 +8,7 @@ from esra.transformers.entity_merging import duplicate_entity_handler
 from esra.transformers.abbreviation_splitter import abbreviation_split
 from esra.transformers.cycle_counter import CycleCounter
 
-filename = './pickle/arxiv_cscl_200.pickle'
+filename = './pickle/arxiv_cscl_100.pickle'
  
 with open(filename, 'rb') as f:
     list_data = pickle.load(f)
@@ -20,8 +20,6 @@ cc = CycleCounter(threshold=3)
 
 for (i,data) in enumerate(list_data):
 
-    print(data)
-    # break
     data = coreference_handler(data)
     data = pp.post_processing(data)
     data = remove_generic(data)
@@ -34,7 +32,7 @@ for (i,data) in enumerate(list_data):
         list_invalid_data.append(data)
     else:
         list_valid_data.append(data)
-
+    
 dot = filename.rfind('.')
 out_filename = f'{filename[:dot]}_cleaned{filename[dot:]}'
 print(out_filename)

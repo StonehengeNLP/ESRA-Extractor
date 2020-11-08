@@ -42,7 +42,7 @@ class CycleCounter:
         adjancency_lists = [[[] for i in range(len(entities))] for j in range(len(self.relation_types))]
     
         for (rt_index,rt) in enumerate(self.relation_types):
-            for current_rt,s_index,e_index in relations:
+            for current_rt, s_index, e_index, _ in relations:
                 if current_rt.upper() == rt:
                     adjancency_lists[rt_index][s_index].append(e_index)
         return adjancency_lists
@@ -145,5 +145,5 @@ class CycleCounter:
         """
         
         data = copy.deepcopy(data)
-        data['relations'] = [[_type, head, tail] for _type, head, tail in data['relations'] if head != tail]
+        data['relations'] = [relation for relation in data['relations'] if relation[1] != relation[2]]
         return data

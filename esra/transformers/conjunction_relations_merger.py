@@ -98,13 +98,13 @@ def __get_entity_mapping(list_conj_group,entities):
 
 
 
-def __get_new_relations(entities_mapping,other_relations):
+def __get_new_relations(entity_mapping, other_relations):
     """
         Retrieve new relations that related on conjunction group
 
         params:
 
-            - entities_mapping: map of entity to conjunction group
+            - entity_mapping: map of entity to conjunction group
 
             - other_relations: relations that delete all conjunction
             relations
@@ -119,17 +119,17 @@ def __get_new_relations(entities_mapping,other_relations):
     new_relations = []
 
     for relation in other_relations:
-        if len(entities_mapping[relation[1]]) > 1 and len(entities_mapping[relation[2]]) == 1:
-            new_relations += [[relation[0],idx,relation[2]] for idx in entities_mapping[relation[1]] \
-                if idx != relation[1]]
-        elif len(entities_mapping[relation[1]]) == 1 and len(entities_mapping[relation[2]]) > 1:
-            new_relations += [[relation[0],relation[1],idx] for idx in entities_mapping[relation[2]] \
-                if idx != relation[2]]
-        elif len(entities_mapping[relation[1]]) > 1 and len(entities_mapping[relation[2]]) > 1:
-            for idx_1 in entities_mapping[relation[1]]:
-                for idx_2 in entities_mapping[relation[2]]:
-                    if idx_1 != relation[1] or idx_2 != relation[2]:
-                        new_relations.append([relation[0],idx_1,idx_2])
+        r0, r1, r2, r3 = relation
+        
+        if len(entity_mapping[r1]) > 1 and len(entity_mapping[r2]) == 1:
+            new_relations += [[r0, idx, r2, r3] for idx in entity_mapping[r1] if idx != r1]
+        elif len(entity_mapping[r1]) == 1 and len(entity_mapping[r2]) > 1:
+            new_relations += [[r0, r1, idx, r3] for idx in entity_mapping[r2] if idx != r2]
+        elif len(entity_mapping[r1]) > 1 and len(entity_mapping[r2]) > 1:
+            for idx_1 in entity_mapping[r1]:
+                for idx_2 in entity_mapping[r2]:
+                    if idx_1 != r1 or idx_2 != r2:
+                        new_relations.append([r0, idx_1, idx_2, r3])
 
     return new_relations
 
@@ -157,8 +157,15 @@ def merge_conjuction_relation(data):
     new_relations = __get_new_relations(entities_mapping,other_relations)
     relations =  other_relations + new_relations
 
+    # find mean of duplicated relations
+    d = {}
+    for *x, r3 in relations:
+        x = tuple(x)
+        if x not in d:
+            d[x] = []
+        d[x] += [r3]
+        
     # remove duplicates
-    relations = {tuple(relation) for relation in relations}
-    relations = [list(relation) for relation in relations]
+    relations = [list(x) + [sum(d[x])/len(d[x])] for x in d]
 
-    return {'entities':entities,'relations':relations}
+    return {'entities': entities,'relations': relations}
