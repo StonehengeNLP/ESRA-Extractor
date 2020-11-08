@@ -48,6 +48,7 @@ if __name__ == '__main__':
         else:
             list_valid_data.append(data)
     
+    print(list_valid_data)
     print(list_invalid_data)
     # dot = filename.rfind('.')
     # out_filename = f'{filename[:dot]}_cleaned{filename[dot:]}'
