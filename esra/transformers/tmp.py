@@ -12,7 +12,8 @@ vectors = []
 
 for doc in documents:
     doc_entities = doc['entities']
-    for ent in doc_entities:
+    for entity in doc_entities:
+        ent = tuple(entity)
         if ent not in ent_set:
             ent_set.add(ent)
             entities.append(ent)
