@@ -71,6 +71,7 @@ def __relation_handler(
     return new_relations  
 
 def __entity_handler(
+    # TODO: average the entities confidence score
     coref_dict:Dict,
     dups_cluster:List,
     entities:List
@@ -82,13 +83,13 @@ def __entity_handler(
         i not in combine
         )]
 
-def __find_all_dups(target:str,entities:List[str]) -> int:
+def __find_all_dups(target:str, entities:List[str]) -> int:
     """
         Find all occurence of entity in entities list 
     """
     indexes = []
     for (i,entity) in enumerate(entities):
-        if entity == target and entity[0].lower() != "generic":
+        if entity[:2] == target[:2] and entity[0].lower() != "generic":
             indexes.append(i)
     return indexes
 
@@ -143,9 +144,10 @@ def duplicate_entity_handler(model_output: Dict) -> Dict:
     passed = set()
     dups_cluster = dict()
     for x in entities:
-        if tuple(x) not in passed:
-            passed.add(tuple(x))
-            occurences = __find_all_dups(x,entities)
+        type, name, *args = x
+        if (type, name) not in passed:
+            passed.add((type, name))
+            occurences = __find_all_dups(x, entities)
             if len(occurences) > 1:
                 for dup_idx in occurences[1:]:
                     dups_cluster[dup_idx] = occurences[0]
