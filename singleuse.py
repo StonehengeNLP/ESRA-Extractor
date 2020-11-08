@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import pickle
 
+from esra.transformers.entity_linker import * 
 from esra.extractors import ESRAE 
 from esra.transformers.entity_merging import coreference_handler
 from esra.transformers.post_processing import Post_processor
@@ -50,6 +51,27 @@ if __name__ == '__main__':
     
     print(list_valid_data)
     print(list_invalid_data)
+
+    entities = []
+    ent_set = set()
+    vectors = []
+
+    for doc in list_valid_data:
+        doc_entities = doc['entities']
+        for entity in doc_entities:
+            ent = entity[:2]
+            ent = tuple(ent)
+            if ent not in ent_set:
+                ent_set.add(ent)
+                entities.append(ent)
+                vector = generate_vector(ent)
+                vectors.append(vector)
+    
+    ent_vec = {'vectors':vectors, 'entities': entities}
+
+    with open('new_doc.pickle', 'wb') as f:
+        pickle.dump(ent_vec,f)
+        print('save pickle')
     # dot = filename.rfind('.')
     # out_filename = f'{filename[:dot]}_cleaned{filename[dot:]}'
     # print(out_filename)
