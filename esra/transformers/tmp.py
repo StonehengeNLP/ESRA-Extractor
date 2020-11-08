@@ -10,14 +10,14 @@ entities = []
 ent_set = set()
 vectors = []
 
-for doc in documents:
+for doc in data:
     doc_entities = doc['entities']
     for entity in doc_entities:
-        ent = tuple(entity)
+        ent = entity[:2]
+        ent = tuple(ent)
         if ent not in ent_set:
             ent_set.add(ent)
             entities.append(ent)
-            entity_name = ent[1]
             vector = generate_vector(ent)
             vectors.append(vector)
 
