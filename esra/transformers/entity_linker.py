@@ -106,13 +106,14 @@ def doc_kg_linking(document_entities, f_name='vec.ann'):
 # change to class
 class Entity_Linker:
     
-    self.tokenizer = BertTokenizer.from_pretrained(
+    tokenizer = BertTokenizer.from_pretrained(
         'allenai/scibert_scivocab_uncased'
     )
-    self.model = BertModel.from_pretrained(
+    model = BertModel.from_pretrained(
         'allenai/scibert_scivocab_uncased',
         output_hidden_states=True
-    ).eval()
+    )
+    model.eval()
 
     def __init__(self, pickle_path):
         with open(pickle_path, 'rb') as f:
