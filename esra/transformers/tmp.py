@@ -58,8 +58,8 @@ class Entity_Linker:
             self.kg_entities = vec_n_ent['entities']
         with open(document_pickle, 'rb') as f:
             vec_n_ent2 =  pickle.load(f)
-            self.doc_vectors = vec_n_ent['vectors']
-            self.doc_entities = vec_n_ent['entities']
+            self.doc_vectors = vec_n_ent2['vectors']
+            self.doc_entities = vec_n_ent2['entities']
     
     def _save_tree(self, f_name='vec.ann'):
         """
@@ -86,7 +86,7 @@ class Entity_Linker:
         nb = np.linalg.norm(b)
         return (a @ b.T)/(na*nb)
 
-    def vector_similarity(self, document_entities, f_name='vec.ann'):
+    def vector_similarity(self, f_name='vec.ann'):
         """ 
             generate index of KG entity that doc link to
             if unlinkable then reptresent with -1
@@ -128,10 +128,10 @@ class Entity_Linker:
         
         return None
     
-    def doc_entity_linking(self, document_entities):
-        emb_idx = self.vector_similarity(document_entities)
+    def doc_entity_linking(self):
+        emb_idx = self.vector_similarity()
         for i,e in enumerate(self.doc_entities):
-            print(document_entities)
+            print(e)
             print("Link to")
             print(emb_idx[i])
 
