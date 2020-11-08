@@ -93,6 +93,12 @@ def __find_all_dups(target:str, entities:List[str]) -> int:
             indexes.append(i)
     return indexes
 
+def __get_new_score(entities,occurences):
+    max_score = -1
+    for dup_idx in occurences:
+        if entities[dup_idx][2] > max_score:
+            max_score = entities[dup_idx][2]
+    return max_score
     
 def coreference_handler(model_output: Dict) -> Dict:
     output = copy.deepcopy(model_output)
@@ -149,6 +155,7 @@ def duplicate_entity_handler(model_output: Dict) -> Dict:
             passed.add((type, name))
             occurences = __find_all_dups(x, entities)
             if len(occurences) > 1:
+                entities[occurences[0]] = [entities[occurences[0]][0],entities[occurences[0]][1],__get_new_score(entities,occurences)]
                 for dup_idx in occurences[1:]:
                     dups_cluster[dup_idx] = occurences[0]
     
