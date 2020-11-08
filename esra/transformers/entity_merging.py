@@ -213,7 +213,7 @@ def coreference_handler(model_output: Dict) -> Dict:
     
     # for new_coref_cluster in new_coref_clusters:
     #     temp = []
-    #     for idx in coref_cluster:
+    #     for idx in new_coref_cluster:
     #         temp.append(entities[idx][1])
     #     val_new_coref.append(temp)
     # print(val_coref,val_new_coref)
