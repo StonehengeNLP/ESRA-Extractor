@@ -110,17 +110,17 @@ class Entity_Linker:
                 search_k=-1,
                 include_distances=False
             )
-            kg_indexes.append(k_indexes)
-            # # check cosine similarity
-            # max_cos_sim = self.cosine_similarity(
-            #     input_vector,
-            #     np.array(t.get_item_vector(k_indexes[0]))
-            # )
-            # if max_cos_sim < SIMILARITY_THRESHOLD: 
-            #     kg_indexes.append(-1)
-            # else:
-            #     # select node with max cosine similarity
-            #     kg_indexes.append(k_indexes[0])
+            # kg_indexes.append(k_indexes)
+            # check cosine similarity
+            max_cos_sim = self.cosine_similarity(
+                input_vector,
+                np.array(t.get_item_vector(k_indexes[0]))
+            )
+            if max_cos_sim < SIMILARITY_THRESHOLD: 
+                kg_indexes.append([-1])
+            else:
+                # select node with max cosine similarity
+                kg_indexes.append(k_indexes)
 
         return kg_indexes
 
@@ -131,9 +131,15 @@ class Entity_Linker:
     def doc_entity_linking(self):
         emb_idx = self.vector_similarity()
         for i,e in enumerate(self.doc_entities):
+            print("###")
             print(e)
             print("Link to")
-            print(emb_idx[i])
+            for idx in emb_idx[i]:
+                if idx == -1:
+                    print("UNLINKABLE")
+                    break
+                else:
+                    print(self.kg_entities[idx])
 
 
 # debug
