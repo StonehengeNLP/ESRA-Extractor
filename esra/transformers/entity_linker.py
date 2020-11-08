@@ -112,14 +112,13 @@ class Entity_Linker:
     self.model = BertModel.from_pretrained(
         'allenai/scibert_scivocab_uncased',
         output_hidden_states=True
-    )
-    self.model.eval()
+    ).eval()
 
     def __init__(self, pickle_path):
         with open(pickle_path, 'rb') as f:
             vec_n_ent =  pickle.load(f)
-            self.vectors = vec_n_ent['vectors']
-            self.entities = vec_n_ent['entities']
+        self.vectors = vec_n_ent['vectors']
+        self.entities = vec_n_ent['entities']
         
 
     def generate_emb_vector(self, entity_name):
