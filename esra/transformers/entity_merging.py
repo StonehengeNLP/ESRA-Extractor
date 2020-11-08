@@ -89,7 +89,7 @@ def __find_all_dups(target:str, entities:List[str]) -> int:
     """
     indexes = []
     for (i,entity) in enumerate(entities):
-        if entity[:2] == target[:2] and entity[0].lower() != "generic":
+        if entity[:2] == target[:2]: # and entity[0].lower() != "generic"
             indexes.append(i)
     return indexes
 
