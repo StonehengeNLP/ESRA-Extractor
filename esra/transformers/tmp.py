@@ -10,7 +10,7 @@ entities = []
 ent_set = set()
 vectors = []
 
-for doc in data:
+for doc in documents:
     doc_entities = doc['entities']
     for entity in doc_entities:
         ent = entity[:2]
