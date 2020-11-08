@@ -1,4 +1,4 @@
-from .entity_linker import *
+from entity_linker import *
 import pickle
 
 pickle_path = '../../pickle/arxiv_cscl_200_cleaned.pickle'
