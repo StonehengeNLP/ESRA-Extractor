@@ -3,6 +3,7 @@
 import torch
 import numpy as np
 import os
+import pickle
 try:
     from transformers import *
 except:
@@ -32,6 +33,7 @@ DIMENTIONS = 768
 NUM_TREE = 10
 NUM_NEIGHBOR = 3
 SIMILARITY_THRESHOLD = 0.9
+pickle_path = '../../pickle/vectors_9.pickle'
 
 def generate_vector(entity_name:str) -> np.ndarray:
     """
@@ -111,7 +113,12 @@ class Entity_Linker:
     )
     self.model.eval()
 
-    # def __init__(self):
+    def __init__(self, pickle_path):
+        with open(pickle_path, 'rb') as f:
+            vec_n_ent =  pickle.load(f)
+            self.vectors = vec_n_ent['vectors']
+            self.entities = vec_n_ent['entities']
+        
 
     def generate_emb_vector(self, entity_name):
         """
@@ -136,6 +143,16 @@ class Entity_Linker:
         
         t.build(NUM_TREE)
         t.save(f_name)
+    
+    def _save_pickle(self, pickle_path):
+        with open(pickle_path, 'rb') as f:
+            save_dict = dict(
+                vectors = self.vectors,
+                entities = self.entities 
+            )
+            pickle.dump(f)
+    
+    def 
     
     def cosine_similarity(self, a, b):
         na = np.linalg.norm(a)
