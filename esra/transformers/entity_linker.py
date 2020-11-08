@@ -19,13 +19,14 @@ except:
 
 # init Scibert model
 # Fix transformers package version to 2.11.0 pls
+device = torch.device('gpu' if torch.cuda.is_available() else 'cpu')
 tokenizer = BertTokenizer.from_pretrained(
     'allenai/scibert_scivocab_uncased'
     )
 model = BertModel.from_pretrained(
     'allenai/scibert_scivocab_uncased',
     output_hidden_states=True
-    )
+    ).to(device)
 model.eval()
 
 # Constant var
@@ -36,11 +37,12 @@ SIMILARITY_THRESHOLD = 0.9
 pickle_path = '../../pickle/vectors_9.pickle'
 
 def generate_vector(entity_name:str) -> np.ndarray:
+    global device
     """
         Return entity name embedding numpy array
     """
-    tokens = tokenizer.encode(entity_name, return_tensors='pt')
     with torch.no_grad():
+        tokens = tokenizer.encode(entity_name, return_tensors='pt').to(device)
         model_output = model(tokens)
     hidden_states = model_output[2]
     # create sentence embedding frim hidden states 
@@ -151,8 +153,6 @@ class Entity_Linker:
                 entities = self.entities 
             )
             pickle.dump(f)
-    
-    def 
     
     def cosine_similarity(self, a, b):
         na = np.linalg.norm(a)
