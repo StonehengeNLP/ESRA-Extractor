@@ -124,17 +124,6 @@ class Post_processor:
         # init used_indexes to store used index
         used_indexes = set()
     
-        # Back component index
-        if len(conj_indexes) == 0:
-            return [doc.text]
-        elif max(conj_indexes) == len(doc) - 1:
-            back_index = len(doc)
-        else:
-            back_index = doc[min(conj_indexes)].head.i
-            back_index = self._find_root(back_index, compound_indexes)
-        back = doc[back_index:].text
-        used_indexes.add(back_index)
-
         # Compound component
         compounds = []
         for con in conj_indexes:
@@ -145,6 +134,19 @@ class Post_processor:
             else:
                 compounds.append(doc[con].text)
                 used_indexes.add(con)
+
+        # Back component index
+        if len(conj_indexes) == 0:
+            return [doc.text]
+        elif max(conj_indexes) == len(doc) - 1:
+            back_index = len(doc)
+        else:
+            back_index = doc[min(conj_indexes)].head.i
+            back_index = self._find_root(back_index, compound_indexes)
+            if back_index <= min(conj_indexes):
+                back_index = max(used_indexes) + 1
+        back = doc[back_index:].text
+        used_indexes.add(back_index)
         
         # Front component
         front = doc[:min(used_indexes)].text
