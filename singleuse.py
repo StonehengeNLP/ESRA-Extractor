@@ -64,7 +64,7 @@ if __name__ == '__main__':
             if ent not in ent_set:
                 ent_set.add(ent)
                 entities.append(ent)
-                vector = generate_vector(ent)
+                vector = generate_vector(entity_name=ent[1])
                 vectors.append(vector)
     
     ent_vec = {'vectors':vectors, 'entities': entities}
