@@ -7,20 +7,19 @@ import pandas as pd
 from esra.extractors import ESRAE 
 from esra.utils import nlp_split
 
-for filename in glob.glob('arxiv/*.csv'):
-    if '5000' in filename:
-        print(filename)
-        
-        df = pd.read_csv(filename)
-        abstracts = df.abstract.to_list()
-        r = ESRAE.extract(abstracts)
-        
-        # with open('./pickle/arxiv_cscl_200.pickle', 'rb') as f:
-        #     r = pickle.load(f)
-        
-        # label their id
-        for doc, id in zip(r, df.id):
-            doc['id'] = id
+for filename in glob.glob('./data/mag/*.json'):
+    print(filename)
+    
+    with open(filename) as f:
+        data = json.load(f)
 
-        with open(f'pickle/{filename[6:-4]}.pickle', 'wb') as f:
-            pickle.dump(r, f)
+    abstracts = [doc['ABS'] for doc in data]
+    ids = [doc['Id'] for doc in data]
+    r = ESRAE.extract(abstracts)
+    
+    # label their id
+    for doc, id in zip(r, ids):
+        doc['id'] = id
+
+    with open(f'data/pickle/{filename[6:-4]}.pickle', 'wb') as f:
+        pickle.dump(r, f)

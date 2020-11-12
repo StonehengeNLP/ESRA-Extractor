@@ -11,5 +11,5 @@ __pycache__/
 # vscode
 .vscode
 
-# output data
-data/
+# # output data
+# data/
