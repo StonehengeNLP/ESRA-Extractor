@@ -4,14 +4,14 @@ import glob
 import pickle
 import pandas as pd
 
-from esra.extractors import ESRAE 
+from esra.extractors import ESRAE
 from esra.utils import nlp_split
 
 for filename in glob.glob('./data/mag/*.json'):
     print(filename)
     
     with open(filename) as f:
-        data = json.load(f)
+        data = json.load(f)[4000:5000]
 
     abstracts = [doc['ABS'] for doc in data]
     ids = [doc['Id'] for doc in data]
@@ -21,5 +21,9 @@ for filename in glob.glob('./data/mag/*.json'):
     for doc, id in zip(r, ids):
         doc['id'] = id
 
-    with open(f'data/pickle/{filename[6:-4]}.pickle', 'wb') as f:
+    with open('data/pickle/data_5000_6.pickle', 'wb') as f:
         pickle.dump(r, f)
+    # slash = filename.rfind('/')
+    # dot = filename.rfind('.')
+    # with open(f'data/pickle/{filename[slash+1:dot]}.pickle', 'wb') as f:
+    #     pickle.dump(r, f)
