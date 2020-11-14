@@ -21,10 +21,11 @@ list_invalid_data = []
 pp = Post_processor()
 cc = CycleCounter(threshold=3)
 
-for (i,data) in enumerate(list_data[36:]):
-    print(i)
-    # print(data)
-    # print('*'*100)
+for (i,data) in enumerate(list_data):
+    
+    if i%100==0:
+        print(i)
+    
     # > all field except entity, relation and coref were deleted
     # > this just by-pass them, and i'wll fix it later
     meta = {k:v for k, v in data.items() if k not in {'entities', 'relations', 'coreferences'}}
