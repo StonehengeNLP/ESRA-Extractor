@@ -20,10 +20,10 @@ def abbreviation_split(data):
     
     for i, entity in enumerate(entities):
         candidate_name = re.split(r'[(|)]', entity[1])
-        
+        candidate_name = [n.strip() for n in candidate_name if len(n) > 1]
+
         # when the abbriviation was found
         if len(candidate_name) > 1:
-            candidate_name = [n.strip() for n in candidate_name if len(n) > 1]
             j = _find_abbrv(candidate_name[:2])
             abbrv = candidate_name.pop(j)
             entity[1] = ' '.join(candidate_name)

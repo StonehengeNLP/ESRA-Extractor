@@ -20,3 +20,5 @@ data/
 # SciBERT pretrained 
 scibert_scivocab_uncased/
 scibert_scivocab_uncased.tar
+# # output data
+# data/

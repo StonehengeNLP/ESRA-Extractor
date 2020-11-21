@@ -51,13 +51,13 @@ def __relation_handler(
     for relation in relations:
         idx1,idx2 = relation[1], relation[2]
         if relation[1] in dups_cluster:
-            idx1 = dups_cluster[relation[1]]            
+            idx1 = dups_cluster[relation[1]]
         if relation[2] in dups_cluster:
-            idx2 = dups_cluster[relation[2]]            
+            idx2 = dups_cluster[relation[2]]
         if relation[1] in coref_dict:
-            idx1 = coref_dict[relation[1]]            
+            idx1 = coref_dict[relation[1]]
         if relation[2] in coref_dict:
-            idx2 = coref_dict[relation[2]]            
+            idx2 = coref_dict[relation[2]]
 
         relation[1] = indexer(
             idx1,
@@ -69,10 +69,9 @@ def __relation_handler(
         )
 
         new_relations.append(relation)
-    return new_relations  
+    return new_relations
 
 def __entity_handler(
-    # TODO: average the entities confidence score
     coref_dict:Dict,
     dups_cluster:List,
     entities:List
@@ -175,7 +174,9 @@ def __handle_coref_cluster(entities,coref_cluster,threshold=0.6):
     clusters_list = [list(cluster) for cluster in clusters_list if len(cluster) > 1]
     return clusters_list
   
-
+def _drop_dup(cluster):
+    return list(set(cluster))
+    
 def coreference_handler(model_output: Dict) -> Dict:
     output = copy.deepcopy(model_output)
     coref_clusters = output.get("coreferences", [])
@@ -199,7 +200,7 @@ def coreference_handler(model_output: Dict) -> Dict:
     for coref_cluster in coref_clusters:
         new_coref_cluster_list = __handle_coref_cluster(entities,coref_cluster)
         for new_coref_cluster in new_coref_cluster_list:
-            new_coref_clusters.append(new_coref_cluster)
+            new_coref_clusters.append(_drop_dup(new_coref_cluster))
 
     # # start of validate test
     # val_coref = []

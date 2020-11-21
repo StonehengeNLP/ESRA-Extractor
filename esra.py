@@ -30,6 +30,6 @@ if __name__ == '__main__':
     
     r = ESRAE.extract(abstracts)
 
-    with open('triple_CNN_10.pickle', 'wb') as f:
+    with open('data/pickle/triple_CNN_10.pickle', 'wb') as f:
         pickle.dump(r, f)
     

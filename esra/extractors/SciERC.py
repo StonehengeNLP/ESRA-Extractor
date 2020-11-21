@@ -21,7 +21,9 @@ def _split_punc(abstract):
             new_abs[-1] += [word.text]
             if word.text == '.':
                 new_abs += [[]]
-        return new_abs[:-1]
+        if new_abs[-1] == []:
+            return new_abs[:-1]
+        return new_abs
     elif isinstance(abstract, list):
         return [_split_punc(a) for a in abstract]
 
