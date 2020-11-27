@@ -1,3 +1,4 @@
+import re
 import spacy
 import en_core_web_sm
 from spacy.tokenizer import Tokenizer
@@ -14,10 +15,8 @@ def custom_tokenizer(nlp):
                 al=ALPHA_LOWER, au=ALPHA_UPPER, q=CONCAT_QUOTES
             ),
             r"(?<=[{a}]),(?=[{a}])".format(a=ALPHA),
-            #r"(?<=[{a}])(?:{h})(?=[{a}])".format(a=ALPHA, h=HYPHENS),
             r"(?<=[{a}0-9])[:<>=()](?=[{a}])".format(a=ALPHA),
             r"(?:[{a}]\.)+ [{a}0-9]".format(a=ALPHA),
-            # r"(?<=et) (?=al\.)",
         ]
     )
 
@@ -33,5 +32,6 @@ nlp = en_core_web_sm.load()
 nlp.tokenizer = custom_tokenizer(nlp)
 
 def nlp_split(text):
+    text = re.sub(r'[\[\]{}"’”]+', '', text)
     text = ' '.join(text.split())
     return nlp(text)
