@@ -31,11 +31,11 @@ for (i,data) in enumerate(list_data):
     meta = {k:v for k, v in data.items() if k not in {'entities', 'relations', 'coreferences'}}
     
     data = coreference_handler(data)
+    data = abbreviation_split(data)
     data = pp.post_processing(data)
     data = remove_generic(data)
     data = merge_conjuction_relation(data)
     data = duplicate_entity_handler(data)
-    data = abbreviation_split(data)
     data = cc.drop_self_loops(data)
     
     # > paste metadata here
