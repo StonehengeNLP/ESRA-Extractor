@@ -145,11 +145,17 @@ class Post_processor:
             back_index = self._find_root(back_index, compound_indexes)
             if back_index <= min(conj_indexes):
                 back_index = max(used_indexes) + 1
-        back = doc[back_index:].text
+        if back_index != len(doc):
+            back = doc[back_index:].text
+        else:
+            back = ''
         used_indexes.add(back_index)
         
         # Front component
-        front = doc[:min(used_indexes)].text
+        if min(used_indexes) == 0:
+            front = ''
+        else:
+            front = doc[:min(used_indexes)].text
         
         # generate entities 
         generated_entities = []
@@ -164,7 +170,11 @@ class Post_processor:
             Return entire entity name with last token being 
             tokenize
         """
-        return doc[:-1].text + " " + inflection.singularize(doc[-1].text)
+        if len(doc) != 1:
+            return doc[:-1].text + " " + \
+                   inflection.singularize(doc[-1].text)
+        else: 
+            return inflection.singularize(doc[-1].text)
 
     def _post_processing(self, entity):
         """
