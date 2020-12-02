@@ -168,7 +168,7 @@ class Post_processor:
         # if pos-tag is V-ing then return same span
         last_word = doc[-1]
         if last_word.tag_ == 'VBG':
-            return doc
+            return doc.text
         
         return doc[:-1].text + " " + doc[-1]._.lemma()
 
