@@ -1,5 +1,5 @@
 import spacy
-import inflection
+import lemminflect
 try:
     import en_core_web_md
 except ModuleNotFoundError:
@@ -170,11 +170,13 @@ class Post_processor:
             Return entire entity name with last token being 
             tokenize
         """
-        if len(doc) != 1:
-            return doc[:-1].text + " " + \
-                   inflection.singularize(doc[-1].text)
-        else: 
-            return inflection.singularize(doc[-1].text)
+
+        # if pos-tag is V-ing then return same span
+        last_word = doc[-1]
+        if last_word.tag_ == 'VBG':
+            return doc.text
+        
+        return doc[:-1].text + " " + doc[-1]._.lemma()
 
     def _post_processing(self, entity):
         """
