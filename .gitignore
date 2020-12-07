@@ -11,14 +11,8 @@ __pycache__/
 # vscode
 .vscode
 
-# output data
-data/
+# # output data
+# data/
 
 # Annoy's tree
 *.ann
-
-# SciBERT pretrained 
-scibert_scivocab_uncased/
-scibert_scivocab_uncased.tar
-# # output data
-# data/

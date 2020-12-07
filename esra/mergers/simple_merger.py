@@ -1,10 +1,5 @@
 import pickle
-import os, sys
 import numpy as np
-
-sys.path.append("../transformers/")
-
-from entity_linker import *
 
 
 def add_paperid(list_obj):
@@ -162,38 +157,6 @@ existing_kg = merging_to_kg(existed_list_triples,existing_kg) # create existing 
 
 # simulate the case that we add new paper
 new_data = list_data[-1:] # paper_id 9 assign to be new paper that going to merge to KG
-
-## Entity linking  ##
-
-# load vectors and entities of existing KG
-with open("../../pickle/vectors_9.pickle", "rb") as f:
-    tmp = pickle.load(f)
-    vectors = tmp["vectors"]
-    entities = tmp["entities"]
-
-# check if tree exist
-if not os.path.exists("vec.ann"):
-    save_tree(vectors)
-
-# link document entities to KG entities
-link_indexes = doc_kg_linking(new_data[0]["entities"])
-
-# Test print link
-print("## Entity linking ##")
-
-for i,kg_idx in enumerate(link_indexes):
-    if kg_idx != -1:
-        print(
-            f"%s link to %s" % (new_data[0]["entities"][i][1], entities[kg_idx])
-        )
-    else:
-        print("Unlink")
-
-print("## End ##")
-
-## 
-
-
 new_list_triples = objects_to_triples(new_data) 
 existing_kg = merging_to_kg(new_list_triples,existing_kg) # merge new paper to existing KG
 

@@ -145,17 +145,11 @@ class Post_processor:
             back_index = self._find_root(back_index, compound_indexes)
             if back_index <= min(conj_indexes):
                 back_index = max(used_indexes) + 1
-        if back_index != len(doc):
-            back = doc[back_index:].text
-        else:
-            back = ''
+        back = doc[back_index:].text
         used_indexes.add(back_index)
         
         # Front component
-        if min(used_indexes) == 0:
-            front = ''
-        else:
-            front = doc[:min(used_indexes)].text
+        front = doc[:min(used_indexes)].text
         
         # generate entities 
         generated_entities = []
