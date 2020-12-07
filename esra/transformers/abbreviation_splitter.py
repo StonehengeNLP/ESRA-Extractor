@@ -5,13 +5,35 @@ import Levenshtein
 
 def _find_abbrv(list_of_candidate):
     """return the index of abbreviation from the given candidates"""
-    # for trivial case
-    for i, c in enumerate(list_of_candidate):
-        if c == c.upper():
-            return i
-    # for complicated case
-    distances = [Levenshtein.distance(c, c.upper()) for c in list_of_candidate]
-    return np.argmin(distances)
+
+    # check length of both texts to classify main_text and abbreviation
+    if len(list_of_candidate[0]) > len(list_of_candidate[1]):
+        return 1
+    else:
+        return 0
+
+def _lcs(x,y):
+    m = len(x) 
+    n = len(y)
+    
+    L = [[None]*(n + 1) for i in range(m + 1)] 
+
+    for i in range(m + 1): 
+        for j in range(n + 1): 
+            if i == 0 or j == 0 : 
+                L[i][j] = 0
+            elif x[i-1] == y[j-1]: 
+                L[i][j] = L[i-1][j-1]+1
+            else: 
+                L[i][j] = max(L[i-1][j], L[i][j-1])    
+    return L[m][n] 
+
+def _is_abbreviation(list_of_candidate):
+    j = _find_abbrv(list_of_candidate)
+    abbrv = list_of_candidate[j]
+    main_text = list_of_candidate[abs(j-1)]
+    return True if _lcs(main_text,abbrv)/len(abbrv) > 0.66 else False
+
 
 def abbreviation_split(data):
     data = copy.deepcopy(data)
@@ -24,21 +46,43 @@ def abbreviation_split(data):
 
         # when the abbriviation was found
         if len(candidate_name) > 1:
-            j = _find_abbrv(candidate_name[:2])
-            abbrv = candidate_name.pop(j)
-            entity[1] = ' '.join(candidate_name)
-            len_entities = len(entities)
-            entities.append(['Abbreviation', abbrv, 1.0])
-            
-            # in the case of parentheses are on the edge
-            if len(candidate_name) == 1:
-                relations.append(['Refer-to', len_entities, i, 1.0])
-            
-            # in the case of parentheses are in the middle
-            else:
-                entities.append([entity[0], candidate_name[0], entity[2]])
-                relations.append(['Refer-to', len_entities, len_entities+1, 1.0])
+            if _is_abbreviation(candidate_name[:2]): #abbreviation case
+                j = _find_abbrv(candidate_name[:2])
+                abbrv = candidate_name.pop(j)
+                entity[1] = ' '.join(candidate_name)
+
+                len_entities = len(entities)
+                entities.append(['Abbreviation', abbrv, 1.0])
+                
+                # in the case of parentheses are on the edge
+                if len(candidate_name) == 1:
+                    relations.append(['Refer-to', len_entities, i, 1.0])
+                
+                # in the case of parentheses are in the middle
+                else:
+                    entities.append([entity[0], candidate_name[0], entity[2]])
+                    relations.append(['Refer-to', len_entities, len_entities+1, 1.0])
+
+            else: #related content case
+                related_content = candidate_name.pop(1)
+                entity[1] = ' '.join(candidate_name)
+
+                len_entities = len(entities)
+                entities.append(['OtherScientificTerm', related_content, entity[2]])
+                
+                # in the case of parentheses are on the edge
+                if len(candidate_name) == 1:
+                    relations.append(['Related-to', len_entities, i, 0.25])
+                
+                # in the case of parentheses are in the middle
+                else:
+                    entities.append([entity[0], candidate_name[0], entity[2]])
+                    relations.append(['Related-to', len_entities, len_entities+1, 0.25])
+                
     return data
+
+
+
 
 '''
 def abbreviation_split(data):
