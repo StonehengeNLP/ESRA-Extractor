@@ -10,7 +10,7 @@ except:
 
 class Entity_Embedder:
     """
-        A class for embedding entity name to embedding vector
+        A class for embedding entity name to embedding vector using SciBERT
     """
 
     # use SciBERT
@@ -26,14 +26,37 @@ class Entity_Embedder:
     def __init__(self):
         pass
 
-    def generate_emb_vector(self, entity_name):
+    def last_layer_embedding(self, entity_name):
         """
-            Return entity name embedding numpy array
+            Return entity name embedding generate from last hidden layer
+        """
+        tokens = self.tokenizer.encode(entity_name, return_tensors='pt')
+        with torch.no_grad():
+            model_output = self.model(tokens)
+        last_layer = model_output[0]
+        return last_layer[:,0,:].cpu().detach().numpy().flatten() # CLS 
+
+    def sum_4_layers_embedding(self, entity_name):
+        """
+            Return entity name embedding generate from sum of last 4 layers
+        """
+        tokens = self.tokenizer.encode(entity_name, return_tensors='pt')
+        with torch.no_grad():
+            model_output = self.model(tokens)
+        embedding = torch.stack(
+            [hidden_layer for hidden_layer in model_output[2][-4:]]
+        ).sum(dim=0)[:,0,:]
+        return embedding.cpu().detach().numpy().flatten()
+
+    def second_last_layer_embedding(self, entity_name):
+        """
+            Return entity name embedding generate from second-to-last hidden
+            layer
         """
         tokens = self.tokenizer.encode(entity_name, return_tensors='pt')
         with torch.no_grad():
             model_output = self.model(tokens)
         hidden_states = model_output[2]
-        # create sentence embedding frim hidden states 
-        out = hidden_states[-2][0].mean(dim=0)
-        return out.detach().numpy()
+        # select CLS token embedding 
+        out = hidden_states[-2][:,0,:].mean(dim=0)
+        return out.cpu().detach().numpy().flatten()
