@@ -13,3 +13,6 @@ __pycache__/
 
 # # output data
 # data/
+
+# Annoy's tree
+*.ann
