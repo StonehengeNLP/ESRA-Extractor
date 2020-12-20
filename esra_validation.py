@@ -1,4 +1,5 @@
 import re
+import tqdm
 import glob
 import pickle
 
@@ -11,7 +12,7 @@ from esra.transformers.abbreviation_splitter import abbreviation_split
 from esra.transformers.cycle_counter import CycleCounter
 
 list_data = []
-for filename in glob.glob('./data/pickle/data_5000*'):
+for filename in glob.glob('./data/pickle/data_5000*')[:-1]:
     print(filename)
     with open(filename, 'rb') as f:
         list_data += pickle.load(f)
@@ -22,15 +23,8 @@ list_invalid_data = []
 pp = Post_processor()
 cc = CycleCounter(threshold=3)
 
-for (i,data) in enumerate(list_data):
+for data in tqdm.tqdm(list_data):
     
-    if i%100==0:
-        print(i)
-        
-    # NOTE: Hot fix name of entities
-    for en in data['entities']:
-        en[1] = re.sub(r'( \- |\- | \-)', '-', en[1])
-        
     # NOTE: Pass data id for identification purpose
     meta = {'id': data['id']}
     
@@ -39,13 +33,22 @@ for (i,data) in enumerate(list_data):
     data = pp.post_processing(data)
     data = remove_generic(data)
     data = merge_conjuction_relation(data)
+    
+    # NOTE: Hot fix name of entities
+    for en in data['entities']:
+        en[1] = en[1].lower()
+        en[1] = re.sub(r'( \- |\- | \-)', '-', en[1]) # connect hyphens
+        en[1] = re.sub(r'[\(\)]', '', en[1]) # remove single sided parenthesis
+        en[1] = re.sub(r' +', ' ', en[1]) # remove double spaces
+        en[1] = en[1].strip()
+            
     data = duplicate_entity_handler(data)
     data = cc.drop_self_loops(data)
     
     # NOTE: Add data id here
     data.update(meta)
 
-    if cc.cyclic_validate(data):
+    if cc.cyclic_validate(data):        
         list_invalid_data.append(data)
     else:
         list_valid_data.append(data)
