@@ -1,5 +1,6 @@
-import pickle
+import re
 import glob
+import pickle
 
 from esra.transformers.entity_merging import coreference_handler
 from esra.transformers.post_processing import Post_processor
@@ -25,10 +26,13 @@ for (i,data) in enumerate(list_data):
     
     if i%100==0:
         print(i)
-    
-    # > all field except entity, relation and coref were deleted
-    # > this just by-pass them, and i'wll fix it later
-    meta = {k:v for k, v in data.items() if k not in {'entities', 'relations', 'coreferences'}}
+        
+    # NOTE: Hot fix name of entities
+    for en in data['entities']:
+        en[1] = re.sub(r'( \- |\- | \-)', '-', en[1])
+        
+    # NOTE: Pass data id for identification purpose
+    meta = {'id': data['id']}
     
     data = coreference_handler(data)
     data = abbreviation_split(data)
@@ -38,7 +42,7 @@ for (i,data) in enumerate(list_data):
     data = duplicate_entity_handler(data)
     data = cc.drop_self_loops(data)
     
-    # > paste metadata here
+    # NOTE: Add data id here
     data.update(meta)
 
     if cc.cyclic_validate(data):
@@ -46,6 +50,6 @@ for (i,data) in enumerate(list_data):
     else:
         list_valid_data.append(data)
     
-with open('data_5000_cleaned.pickle','wb') as f:
+with open('./data/pickle/data_5000_cleaned.pickle','wb') as f:
     pickle.dump(list_valid_data,f)
     print("Done!")
