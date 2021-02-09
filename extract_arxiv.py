@@ -10,8 +10,15 @@ from esra.utils import nlp_split
 
 
 def clean_abstract(abstract):
+    
+    # remove other language
+    pos = abstract.find('----')
+    if pos > len(abstract) / 3:
+        abstract = abstract[:pos]
+    
     abstract = re.sub(r'\s+', ' ', abstract)
     abstract = re.sub(r'\\\'', '\'', abstract)
+    abstract = re.sub(r'\\\`', '\'', abstract)
     
     # \begin{text}
     abstract = re.sub(r'\\citep?\{([^\}]+)\}', r'', abstract)
@@ -36,12 +43,12 @@ def clean_abstract(abstract):
 df = pd.read_csv('data/arxiv/kaggle-arxiv-cscl-2020-12-18.csv')
 df.abstract = df.abstract.apply(clean_abstract)
 
-for i in range(24):
+for i in range(1, 24):
     start = i * 1000
     end = (i + 1) * 1000
     
     abstracts = df.abstract.iloc[start:end].to_list()
-    ids = df.ids[start:end].to_list()
+    ids = df.id[start:end].to_list()
     r = ESRAE.extract(abstracts)
 
     # label their id

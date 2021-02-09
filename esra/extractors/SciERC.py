@@ -11,7 +11,8 @@ from ..utils import nlp_split
 
 
 def _hash_list(l:list):
-    return str(hash(str(l)))
+    
+    return str(hash(str(l) + str(random.random())))
 
 def _split_punc(abstract):
     """abstract preprocessing"""
