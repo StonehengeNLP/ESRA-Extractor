@@ -1,3 +1,4 @@
+import os
 import re
 import esra
 import json
@@ -38,14 +39,20 @@ def clean_abstract(abstract):
     # ^{upper_text}
     abstract = re.sub(r'\^\{([^\}]+)\}', r' \1', abstract)
     
+    abstract = ' '.join(abstract.split()[:400])
     return abstract.strip()
 
 df = pd.read_csv('data/arxiv/kaggle-arxiv-cscl-2020-12-18.csv')
 df.abstract = df.abstract.apply(clean_abstract)
 
-for i in range(1, 24):
+for i in range(24):
     start = i * 1000
     end = (i + 1) * 1000
+    
+    filename = f'data/pickle/kaggle_arxiv_{start}_{end}.pickle'
+    print(filename)
+    if os.path.isfile(filename):
+        continue
     
     abstracts = df.abstract.iloc[start:end].to_list()
     ids = df.id[start:end].to_list()
@@ -55,5 +62,5 @@ for i in range(1, 24):
     for doc, id in zip(r, ids):
         doc['id'] = id
 
-    with open(f'data/pickle/kaggle_arxiv_{start}_{end}.pickle', 'wb') as f:
+    with open(filename, 'wb') as f:
         pickle.dump(r, f)
