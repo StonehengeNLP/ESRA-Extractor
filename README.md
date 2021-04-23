@@ -2,8 +2,8 @@
 
 1. Setting up
 ``` sh
-git clone --recursive https://github.com/StonehengeNLP/esra.git
-cd ./ESRA
+git clone --recursive https://github.com/StonehengeNLP/ESRA-Extractor.git
+cd ./ESRA-Extractor
 scripts/setup.sh
 ```
 
