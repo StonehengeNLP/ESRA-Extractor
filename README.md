@@ -16,9 +16,6 @@ apt-get update \
 && add-apt-repository ppa:deadsnakes/ppa \
 && apt-get update \
 && apt-get install -y python3.7 python3.7-venv virtualenv
-
-virtualenv --python=3.7 env
-source env/bin/activate
 ```
 
 3. Setting up
@@ -26,6 +23,10 @@ source env/bin/activate
 ``` sh
 git clone --recursive https://github.com/StonehengeNLP/ESRA-Extractor.git
 cd ./ESRA-Extractor
+
+# Activate virtual environment
+virtualenv --python=3.7 env
+source env/bin/activate
 
 # Install dependencies
 scripts/setup.sh
