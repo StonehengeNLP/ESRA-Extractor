@@ -4,6 +4,9 @@
 ``` sh
 docker run --runtime=nvidia -it -d --name esra_extractor nvidia/cuda
 docker exec -it esra_extractor bash
+
+# These all are needed
+apt-get install git python3 python3-pip wget
 ```
 
 1. Setting up
@@ -13,8 +16,8 @@ git clone --recursive https://github.com/StonehengeNLP/ESRA-Extractor.git
 cd ./ESRA-Extractor
 
 # Install dependencies
-scripts/setup.sh
 pip install -r requirements.txt
+scripts/setup.sh
 ```
 
 2. Evaluating the model
