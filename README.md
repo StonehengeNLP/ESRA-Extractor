@@ -9,7 +9,19 @@ docker exec -it esra_extractor bash
 apt-get install git python3 python3-pip wget
 ```
 
-1. Setting up
+1. Python3.7 environments
+``` sh
+apt-get update \
+&& apt-get install -y software-properties-common curl \
+&& add-apt-repository ppa:deadsnakes/ppa \
+&& apt-get update \
+&& apt-get install -y python3.7 python3.7-venv virtualenv
+
+virtualenv --python=3.7 env
+source env/bin/activate
+```
+
+3. Setting up
 
 ``` sh
 git clone --recursive https://github.com/StonehengeNLP/ESRA-Extractor.git
