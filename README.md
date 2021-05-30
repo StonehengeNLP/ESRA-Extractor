@@ -18,7 +18,7 @@ apt-get update \
 && apt-get install -y python3.7 python3.7-venv virtualenv
 ```
 
-3. Setting up
+2. Setting up
 
 ``` sh
 git clone --recursive https://github.com/StonehengeNLP/ESRA-Extractor.git
@@ -33,12 +33,12 @@ scripts/setup.sh
 pip install -r requirements.txt
 ```
 
-2. Evaluating the model
+3. Evaluating the model
 ``` sh
 python ./evaluator.py
 ```
 
-3. Extract abstracts
+4. Extract abstracts
 ``` sh
 # edit the abstracts and run
 python ./esra.py
