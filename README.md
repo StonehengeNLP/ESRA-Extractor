@@ -28,8 +28,8 @@ git clone --recursive https://github.com/StonehengeNLP/ESRA-Extractor.git
 cd ./ESRA-Extractor
 
 # Install dependencies
-pip install -r requirements.txt
 scripts/setup.sh
+pip install -r requirements.txt
 ```
 
 2. Evaluating the model
