@@ -9,11 +9,12 @@ cd ..
 
 
 # Setup for SciERC
+ESRA_PATH="$PWD"
 cd ./SciERC
 pip3 install -r ./requirements.txt
 
 CUR_PATH="$PWD"
-cd /usr/local/lib/python3.7/site-packages/tensorflow
+cd $ESRA_PATH/env/lib/python3.7/site-packages/tensorflow
 ln -s libtensorflow_framework.so.1 libtensorflow_framework.so
 cd $CUR_PATH
 
