@@ -42,4 +42,7 @@ python ./evaluator.py
 ``` sh
 # edit the abstracts and run
 python ./esra.py
+
+# validate/clean the extracted entities and relation
+python ./esra_validation.py
 ```
